@@ -1,0 +1,16 @@
+Project,Super,Vulnerability
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,org.apache.openjpa:openjpa:2.1.1,CVE-2013-1768
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,apache:openjpa:1.0.2,CVE-2013-1768
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,mortbay:jetty:6.1.7,CVE-2009-4610
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,mortbay:jetty:6.1.7,CVE-2009-4611
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,mortbay:jetty:6.1.7,CVE-2009-4612
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,mortbay:jetty:6.1.7,CVE-2009-1523
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,mortbay:jetty:6.1.7,CVE-2009-1524
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,mortbay:jetty:6.1.7,CVE-2009-4609
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,mortbay:jetty:6.1.7,CVE-2011-4461
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,apache:myfaces:2.1.1,CVE-2011-4367
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,org.apache.cxf:cxf:2.1.1,CVE-2010-2076
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,org.dojotoolkit:dojo:1.0.2,CVE-2010-2273
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,org.dojotoolkit:dojo:1.0.2,CVE-2010-2274
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,org.dojotoolkit:dojo:1.0.2,CVE-2010-2275
+org.apache.geronimo.assemblies:geronimo-jetty6-javaee5:2.1.1,org.dojotoolkit:dojo:1.0.2,CVE-2010-2276

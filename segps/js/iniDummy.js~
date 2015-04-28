@@ -1,0 +1,11 @@
+var dataArr = [1,2,3];
+d3.select('vRQ1').selectAll('p')
+        .data(dataArr)
+        .enter()
+        .append('p')
+        .text(function(d){
+          return "I'm 'p' element number"+d;
+        })
+        .style('font-size',function(d){
+          return d*10;
+        });

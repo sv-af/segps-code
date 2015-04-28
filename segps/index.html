@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>SE-GPS</title>
+
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="css/style.css" rel="stylesheet">
+
+<!-- Custom Fonts -->
+<link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,600,600italic' rel='stylesheet' type='text/css'>
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<style>
+.labeltooltip {
+  width: auto;
+  height: auto;
+  padding: 10px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  position: absolute;
+  font-size: 1em;
+  background-color: #F0ECDD;
+  border: solid 2px #9C4590;
+  border-radius: 8px;
+}
+.surveyBox {
+  background-color: #57B9CB;
+  color: #FFFFFF;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+}
+.axis path,
+.axis line {
+	fill: none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
+.axis text {
+	font-family: sans-serif;
+	font-size: 11px;
+}
+</style> 
+</head>
+
+<body id="page-top" class="index">
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container"> 
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+    <span class="navbar-header page-scroll"><a class="navbar-brand page-scroll" href="#page-top">SE-GPS</a></span>
+    </div> 
+    
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="hidden"> <a href="#page-top"></a> </li>
+ 	<li> <a class="page-scroll" href="#services">Trace Vulnerabilities</a> </li>
+   <!--     <li> <a class="page-scroll" href="http://github.com/segps" target="_blank">Github</a> </li> -->
+        <li> <a class="page-scroll" href="#about">About</a> </li>
+        <li> <a class="page-scroll" href="#team">Team</a> </li>
+      </ul>
+    </div>
+    <!-- /.navbar-collapse --> 
+  </div>
+  <!-- /.container-fluid --> 
+</nav>
+
+<!-- Header -->
+<header>
+  <div class="container">
+    <div class="intro-text">
+      <div class="intro-lead-in"><img src="img/logo-centered2.png">
+      <br>
+        <iframe src="https://ghbtns.com/github-btn.html?user=segps&type=follow&size=large" frameborder="0" scrolling="0" width="165px" height="30px"></iframe>
+      </div>
+      <div class="intro-heading">SE-GPS is a Visualization tool used for Tracing Security Vulnerabilities in Software Repositories</div>
+      <a href="#services" class="page-scroll btn btn-xl"><i class="fa fa-angle-double-down fa-4x"></i></a> </div>
+  </div>
+</header>
+
+<!-- Services Section -->
+<section id="services">
+  <div class="container">
+       
+    <div class="row text-center">
+      <div class="col-md-4">
+        <div class="legend-wrapper">
+            <h3>Security Vulnerabilities</h3>
+            <p>Each security vulnerability represented as a node in the graph. The bigger nodes are the API nodes. Edges connect security vulnerabilites nodes that affect API. Vulnerabilities are labeled "Low" severity if they have a CVSS base score of 0.0-3.9. Vulnerabilities will be labeled "Medium" severity if they have a base CVSS score of 4.0-6.9. Vulnerabilities will be labeled "High" severity if they have a CVSS base score of 7.0-10.0. 
+	   </p>
+            <div class="legend">
+              <div class="legenditem">
+                <img src="img/circle.png" height="16" width="16">  
+                <p>Label</p>
+              </div>
+              <div class="legenditem">
+                <img src="img/circle.png" height="16" width="16"> 
+                <p>Number of labeled issues</p>
+              </div>
+              <div class="legenditem">
+                <img src="img/circle.png" height="16" width="16">  
+                <p>Labels assigned together</p>
+              </div>
+              <div class="legenditem">
+                <img src="img/circle.png" height="16" width="16"> 
+                <p>Number of occurrences of a pair of labels</p>
+              </div>
+            </div>
+        </div>
+        <h4 class="service-heading">Visualize Data</h4>
+        <form name="sentMessage1" id="visualizationFormRQ1" novalidate>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Vendor e.g. org.apache.poi" id="vendor" required data-validation-required-message="Please enter vendor's name.">
+                <p class="help-block text-danger"></p>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Product e.g. poi" id="product" required data-validation-required-message="Please enter product's name.">
+                <p class="help-block text-danger"></p>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Version e.g. 3.6" id="version" required data-validation-required-message="Please enter product's version.">
+		<input type="hidden" id="vrq" value="vrq1">
+                <p class="help-block text-danger"></p>
+              </div>
+              <div class="checkbox">
+              <label>
+                <input type="checkbox" value="dependency"> Dependency Trace
+              </label>
+            </div> 
+            <div class="clearfix"></div>
+            <div class="col-lg-12 text-center">
+              <div id="successRQ1"></div> </br>
+              <button type="submit" class="btn btn-primary btn-lg">Visualize</button>
+            </div>
+        </form>
+      </div>
+      <div class="col-sm-8">
+        <div id="vRQ1" style="height:600px;width:800px;border: solid 2px #9C4590;border-radius: 20px;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="bg-light-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2 class="section-heading">About</h2>
+        <div class="line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-10 col-sm-10 col-centered">
+        <p>
+          SE-GPS takes advantage of Semantic Web technologies to establish traceability links between vulnerability repositories and other software repositories using a unified knowledge representation. More specifically, SEGPS takes advantage of knowledge captured in software build repositories (e.g., MAVEN) and establish bi-directional traceability links to National Vulnerability Database (NVD), a specialized software security vulnerabilities database.
+        </p>
+        <br>
+        <p>
+          SE-GPS provide answers to developers’ questions such as: How many projects are directly or indirectly affected by a specific vulnerability across project boundaries? Or what are the known security concerns and their potential impact on a particular project?
+        </p>
+        <br>
+        <p>
+          SE-GPS helps eliminating existing knowledge silos and further allows for information security to become an integrated part of software development processes.
+        </p>
+     
+	 <br>
+
+        <div class="surveyBox" class="col-md-12">
+        <p class="text-center">We need you!<b> <a href="" >Take our survey!</a></b></p>
+        </div>
+      </div>
+  </div>
+
+
+</section>
+
+<!-- Team Section -->
+<section id="team">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2 class="section-heading">Team</h2>
+        <div class="line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="team-member"> <img src="img/team/sultan.jpg" class="img-responsive img-circle" alt="">
+          <h4>Sultan S. Al-Qahtani</h4>
+          <p class="text-muted">
+            <a href="mailto:s_alqaht@encs.concordia.ca">s_alqaht@encs.concordia.ca</a></p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="team-member"> <img src="img/team/ellis.jpg" class="img-responsive img-circle" alt="">
+          <h4>Ellis E. Eghan</h4>
+          <p class="text-muted"><a href="mailto:e_eghan@encs.concordia.ca">e_eghan@encs.concordia.ca</a></p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="team-member"> <img src="img/team/juergen.jpg" class="img-responsive img-circle" alt="">
+          <h4>Juergen Rilling</h4>
+          <p class="text-muted"><a href="mailto:juergen.rilling@encs.concordia.ca">juergen.rilling@encs.concordia.ca</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- jQuery --> 
+<script src="js/jquery.js"></script> 
+
+<!-- Bootstrap Core JavaScript --> 
+<script src="js/bootstrap.min.js"></script> 
+
+<!-- Plugin JavaScript --> 
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script> 
+<script src="js/classie.js"></script> 
+<script src="js/cbpAnimatedHeader.js"></script> 
+
+<!-- Validation --> 
+<script src="js/jqBootstrapValidation.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<!-- <script src="js/RQ1.js"></script> -->
+
+<!-- Custom Theme JavaScript -->
+<script src="js/iniDummy.js"></script>
+<script src="js/main.js"></script>
+
+
+</body>
+</html>
