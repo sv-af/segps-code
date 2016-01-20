@@ -183,6 +183,43 @@ public class SecurityDBsTBox {
 	}
 	
 	// Object Properties
+	public static String hasSeverity() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasSeverity";
+		return uri;
+	}
+	
+	public static String hasSeverityScore() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasSeverityScore";
+		return uri;
+	}
+	
+	public static String hasBaseScore() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasBaseScore";
+		return uri;
+	}
+	public static String hasEnvironmentalScore() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasEnvironmentalScore";
+		return uri;
+	}
+	public static String hasTemporalScore() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasTemporalScore";
+		return uri;
+	}
 	public static String hasAffect() {
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,
@@ -293,6 +330,14 @@ public class SecurityDBsTBox {
 				NamespaceRegistry.theTboxNameSpace,
 				OntologyRegistry.securityDBs)
 				+ "hasVulnerabilityId";
+		return uri;
+	}
+	
+	public static String hasWeaknessId() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasWeaknessId";
 		return uri;
 	}
 }
