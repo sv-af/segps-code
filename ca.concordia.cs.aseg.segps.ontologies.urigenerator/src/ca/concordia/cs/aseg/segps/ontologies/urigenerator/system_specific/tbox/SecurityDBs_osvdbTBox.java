@@ -6,6 +6,11 @@
  */
 package ca.concordia.cs.aseg.segps.ontologies.urigenerator.system_specific.tbox;
 
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.namespace.NamespaceFactory;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.registry.NamespaceRegistry;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.registry.OntologyRegistry;
+
 public class SecurityDBs_osvdbTBox {
 
+	
 }

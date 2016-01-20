@@ -110,6 +110,22 @@ public class SecurityDBsTBox {
 		return uri;
 	}
 	
+	public static String OperatingSystem() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "OperatingSystem";
+		return uri;
+	}
+	
+	public static String Application() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "Application";
+		return uri;
+	}
+	
 	public static String Status() {
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,
@@ -167,7 +183,6 @@ public class SecurityDBsTBox {
 	}
 	
 	// Object Properties
-
 	public static String hasAffect() {
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,
@@ -239,5 +254,45 @@ public class SecurityDBsTBox {
 				+ "isLocatedIn";
 		return uri;
 	}
+	
 	// Data Properties
+	public static String hasAffectedReleaseName() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasAffectedReleaseName";
+		return uri;
+	}
+	
+	public static String hasAffectedReleaseVersion() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasAffectedReleaseVersion";
+		return uri;
+	}
+	
+	public static String hasPublishedDate() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasPublishedDate";
+		return uri;
+	}
+	
+	public static String hasModifiedDate() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasModifiedDate";
+		return uri;
+	}
+	
+	public static String hasVulnerabilityId() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasVulnerabilityId";
+		return uri;
+	}
 }
