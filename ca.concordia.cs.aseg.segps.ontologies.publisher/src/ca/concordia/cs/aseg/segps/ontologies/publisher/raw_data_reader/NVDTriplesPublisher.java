@@ -6,7 +6,7 @@
  */
 package ca.concordia.cs.aseg.segps.ontologies.publisher.raw_data_reader;
 
-public class NVDtriples {
+public class NVDTriplesPublisher {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
