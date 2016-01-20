@@ -182,7 +182,23 @@ public class SecurityDBsTBox {
 		return uri;
 	}
 	
+	public static String Reference() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "Reference";
+		return uri;
+	}
+	
 	// Object Properties
+	public static String hasReference() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasReference";
+		return uri;
+	}
+	
 	public static String hasSeverity() {
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,
@@ -293,6 +309,14 @@ public class SecurityDBsTBox {
 	}
 	
 	// Data Properties
+	public static String hasSource() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasSource";
+		return uri;
+	}
+	
 	public static String hasAffectedReleaseName() {
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,

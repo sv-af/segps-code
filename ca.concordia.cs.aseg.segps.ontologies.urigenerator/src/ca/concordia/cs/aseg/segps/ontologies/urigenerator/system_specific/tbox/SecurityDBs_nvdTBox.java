@@ -184,13 +184,36 @@ public class SecurityDBs_nvdTBox {
 		return uri;
 	}
 	
+	public static String ReferenceTypePatch() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs_nvd)
+				+ "ReferenceTypePatch";
+		return uri;
+	}
+	
+	public static String ReferenceTypeUnknown() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs_nvd)
+				+ "ReferenceTypeUnknown";
+		return uri;
+	}
+	
+	public static String ReferenceTypeVendorAdvisory() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs_nvd)
+				+ "ReferenceTypeVendorAdvisory";
+		return uri;
+	}
 	/*
 	 * Object Properties
 	 */
 
 	
 	/*
-	 * Data Properties *** may need update
+	 * Data Properties *** these data properties not added to owl file yet !!
 	 */
 	public static String hasAccessComplexity() {
 		String uri = NamespaceFactory.createTboxNamespace(
