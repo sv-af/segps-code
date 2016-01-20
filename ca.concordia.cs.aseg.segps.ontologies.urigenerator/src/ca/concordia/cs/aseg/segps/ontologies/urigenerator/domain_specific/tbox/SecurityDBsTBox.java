@@ -317,6 +317,14 @@ public class SecurityDBsTBox {
 		return uri;
 	}
 	
+	public static String hasURL() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasURL";
+		return uri;
+	}
+		
 	public static String hasAffectedReleaseName() {
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,
