@@ -19,6 +19,27 @@ public class SecurityDBs_nvdTBox {
 	/*
 	 * Individuals
 	 */
+	public static String High() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs_nvd)
+				+ "High";
+		return uri;
+	}
+	public static String Low() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs_nvd)
+				+ "Low";
+		return uri;
+	}
+	public static String Medium() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs_nvd)
+				+ "Medium";
+		return uri;
+	}
 	public static String Unknown() {
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,
