@@ -77,7 +77,7 @@ public class Entry {
 		return this.publishedDatetime;
 	}
 	
-	public void setlastModifiedDatetime(String lastModifiedDatetime){
+	public void setLastModifiedDatetime(String lastModifiedDatetime){
 		this.lastModifiedDatetime = lastModifiedDatetime;
 	}
 	public String getLastModifiedDatetime(){
@@ -163,6 +163,9 @@ public class Entry {
 	
 	public void setSummary(String summary){
 		this.summary = summary;
+	}
+	public String getSummary(){
+		return this.summary;
 	}
 }
 
