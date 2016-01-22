@@ -215,27 +215,27 @@ public class SecurityDBsTBox {
 		return uri;
 	}
 	
-	public static String hasBaseScore() {
-		String uri = NamespaceFactory.createTboxNamespace(
-				NamespaceRegistry.theTboxNameSpace,
-				OntologyRegistry.securityDBs)
-				+ "hasBaseScore";
-		return uri;
-	}
-	public static String hasEnvironmentalScore() {
-		String uri = NamespaceFactory.createTboxNamespace(
-				NamespaceRegistry.theTboxNameSpace,
-				OntologyRegistry.securityDBs)
-				+ "hasEnvironmentalScore";
-		return uri;
-	}
-	public static String hasTemporalScore() {
-		String uri = NamespaceFactory.createTboxNamespace(
-				NamespaceRegistry.theTboxNameSpace,
-				OntologyRegistry.securityDBs)
-				+ "hasTemporalScore";
-		return uri;
-	}
+//	public static String hasBaseScore() {
+//		String uri = NamespaceFactory.createTboxNamespace(
+//				NamespaceRegistry.theTboxNameSpace,
+//				OntologyRegistry.securityDBs)
+//				+ "hasBaseScore";
+//		return uri;
+//	}
+//	public static String hasEnvironmentalScore() {
+//		String uri = NamespaceFactory.createTboxNamespace(
+//				NamespaceRegistry.theTboxNameSpace,
+//				OntologyRegistry.securityDBs)
+//				+ "hasEnvironmentalScore";
+//		return uri;
+//	}
+//	public static String hasTemporalScore() {
+//		String uri = NamespaceFactory.createTboxNamespace(
+//				NamespaceRegistry.theTboxNameSpace,
+//				OntologyRegistry.securityDBs)
+//				+ "hasTemporalScore";
+//		return uri;
+//	}
 	public static String hasAffect() {
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,
@@ -370,6 +370,117 @@ public class SecurityDBsTBox {
 				NamespaceRegistry.theTboxNameSpace,
 				OntologyRegistry.securityDBs)
 				+ "hasWeaknessId";
+		return uri;
+	}
+	public static String hasAccessComplexity() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasAccessComplexity";
+		return uri;
+	}
+
+	public static String hasAccessVector() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasAccessVector";
+		return uri;
+	}
+
+	public static String hasAuthentication() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasAuthentication";
+		return uri;
+	}
+
+	public static String hasAvailabilityImpact() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasAvailabilityImpact";
+		return uri;
+	}
+
+	public static String hasConfidentialityImpact() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasConfidentialityImpact";
+		return uri;
+	}
+
+	public static String hasIntegrityImpact() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasIntegrityImpact";
+		return uri;
+	}
+
+	public static String hasAvailabilityRequirement() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasAvailabilityRequirement";
+		return uri;
+	}
+
+	public static String hasCollateralDamagePotential() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasCollateralDamagePotential";
+		return uri;
+	}
+
+	public static String hasTargetDistribution() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasTargetDistribution";
+		return uri;
+	}
+
+	public static String hasConfidentialityRequirement() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasConfidentialityRequirement";
+		return uri;
+	}
+
+	public static String hasIntegrityRequirement() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasIntegrityRequirement";
+		return uri;
+	}
+
+	public static String hasExploitability() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasExploitability";
+		return uri;
+	}
+
+	public static String hasRemediationLevel() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasRemediationLevel";
+		return uri;
+	}
+
+	public static String hasReportConfidence() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasReportConfidence";
 		return uri;
 	}
 }
