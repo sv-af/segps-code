@@ -6,6 +6,7 @@
  */
 package ca.concordia.cs.aseg.segps.ontologies.publisher.raw_data_parser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ public class Entry {
 	private String operatingSystem;
 	private String application;
 	private String hardware;
+	private ArrayList<String> affectedProductList;
 
 	private String cveID;
 
@@ -33,10 +35,16 @@ public class Entry {
 	private String referenceType;
 	private String referenceSource;
 	private String refernceURL;
+	private ArrayList<String> referencesList;
 
 	private String summary;
 	
 	private Map<String, String> attributes = new HashMap<>();
+	
+	public Entry(){
+		affectedProductList = new ArrayList();
+		referencesList = new ArrayList();
+	}
 	
 	public void setAffectedProduct(String affectedProduct){
 		
@@ -45,6 +53,8 @@ public class Entry {
 		
 		if(split.length >= 5){
 			this.affectedProduct = split[2] + ":" + split[3] + ":" + split[4]; // e.g. vendor_name:product_name:version
+			affectedProductList.add(affectedProduct);
+			
 			// Classify Affected products into OS or APP
 			if (split[1].equals("/o")) {
 				this.operatingSystem = this.affectedProduct;
@@ -52,6 +62,10 @@ public class Entry {
 				this.application = this.affectedProduct;
 			}
 		}
+	}
+	
+	public ArrayList<String> getAffectedProductList(){
+		return this.affectedProductList;
 	}
 	public String getAffectedProduct(){
 		return this.affectedProduct;
@@ -142,6 +156,8 @@ public class Entry {
 	
 	public void setReferenceType(String referenceType){
 		this.referenceType = referenceType;
+		referencesList.add(this.referenceType);
+		
 	}
 	public String getreferenceType(){
 		return this.referenceType;
@@ -149,6 +165,7 @@ public class Entry {
 	
 	public void setReferenceSource(String referenceSource){
 		this.referenceSource = referenceSource;
+		referencesList.add(this.referenceSource);
 	}
 	public String getReferenceSource(){
 		return this.referenceSource;
@@ -156,6 +173,7 @@ public class Entry {
 	
 	public void setRefernceURL(String refernceURL){
 		this.refernceURL = refernceURL;
+		referencesList.add(this.refernceURL);
 	}
 	public String getRefernceURL(){
 		return this.refernceURL;
@@ -166,6 +184,16 @@ public class Entry {
 	}
 	public String getSummary(){
 		return this.summary;
+	}
+	
+	public void testReferences(){
+		for(int i=0; i<this.referencesList.size(); ){
+			System.out.println("Reference Type: " +referencesList.get(i));
+			System.out.println("Reference Source: "+ referencesList.get(i+1));
+			System.out.println("Reference URL: "+ referencesList.get(i+2));
+			i+=3;
+			
+		}
 	}
 }
 

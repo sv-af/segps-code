@@ -16,15 +16,18 @@ import org.xml.sax.helpers.DefaultHandler;
 public class EntryHandler extends DefaultHandler{
 	// to catch nvd entries.
 	private Entry newEntry = null;
-	
-	private ArrayList<String> affectedProductsList = new ArrayList();
-	private ArrayList<String> vulnerabilityReferecnesList = new ArrayList();
-	
+		
 	boolean isCveID, isAffectedProduct, isPublishedDatetime, isLastModifiedDatetime, isScore,
 			isAccessVector, isAccessComplexity, isAuthentication,
 			isConfidentialityImpact, isIntegrityImpact, isAvailabilityImpact,
 			isCweID, isReferenceType, isReferenceSource, isRefernceURL,
 			isSummary;
+	// to capture reference_type from xml tag attributes
+	private String rt;
+	// to capture href from xml tag attributes
+	private String url;
+	
+	private String rs;
 
 	@Override
 	public void startElement(String uri, String localName, String qName,
@@ -58,10 +61,12 @@ public class EntryHandler extends DefaultHandler{
 		}else if(qName.equalsIgnoreCase("vuln:cwe")){
 			isCweID = true;
 		}else if(qName.equalsIgnoreCase("vuln:references")){
+			rt = atts.getValue("reference_type");
 			isReferenceType = true;
 		}else if(qName.equalsIgnoreCase("vuln:source")){
 			isReferenceSource = true;
 		}else if(qName.equalsIgnoreCase("vuln:reference")){
+			url = atts.getValue("href");
 			isRefernceURL = true;
 		}else if(qName.equalsIgnoreCase("vuln:summary")){
 			isSummary = true;
@@ -72,7 +77,8 @@ public class EntryHandler extends DefaultHandler{
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		if(qName.equalsIgnoreCase("entry")){
-			// it should publish the enrty uris file
+			// it should publish the entry uris file
+			newEntry.testReferences();
 			newEntry = null;
 		}
 	}
@@ -82,7 +88,6 @@ public class EntryHandler extends DefaultHandler{
 			throws SAXException {
 		if(isAffectedProduct){
 			newEntry.setAffectedProduct(new String(ch,start, length));
-			affectedProductsList.add(newEntry.getAffectedProduct());
 			isAffectedProduct =false;
 		}else if(isCveID){
 			newEntry.setcveID(new String(ch, start, length));
@@ -118,13 +123,13 @@ public class EntryHandler extends DefaultHandler{
 			newEntry.setcweID(new String(ch, start, length));
 			isCweID = false;
 		}else if(isReferenceType){
-			newEntry.setReferenceType(new String(ch, start, length));
+			newEntry.setReferenceType(rt);
 			isReferenceType = false;
 		}else if(isReferenceSource){
-			newEntry.setReferenceType(new String(ch, start, length));
+			newEntry.setReferenceSource(new String(ch, start, length));
 			isReferenceSource = false;
 		}else if(isRefernceURL){
-			newEntry.setRefernceURL(new String(ch, start, length));
+			newEntry.setRefernceURL(url);
 			isRefernceURL = false;
 		}
 	}
