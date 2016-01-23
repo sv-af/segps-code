@@ -195,5 +195,13 @@ public class Entry {
 			
 		}
 	}
+	
+	public void testAffectedProductsList(){
+		System.out.println("****************************************");
+		for(int i=0; i<this.affectedProductList.size(); i++){
+			System.out.println("Affected product: "+ affectedProductList.get(i));
+		}
+		System.out.println("****************************************");
+	}
 }
 

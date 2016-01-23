@@ -18,9 +18,15 @@ public class SecurityDBsABox {
 		return uri;
 	}
 	
-//	public static void main(String[] args) {
-//		String vulnerability = Vulnerability("CVE-2013-2020");
-//		System.out.println(vulnerability);
-//	}
+	public static String AffectedProductr(String AffectedProduct) {
+		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theAboxNameSpace, OntologyRegistry.securityDBs)
+				+ AffectedProduct;
+		return uri;
+	}
+	
+	public static void main(String[] args) {
+		String vulnerability = Vulnerability("CVE-2013-2020");
+		System.out.println(vulnerability);
+	}
 
 }

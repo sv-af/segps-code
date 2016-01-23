@@ -191,6 +191,13 @@ public class SecurityDBsTBox {
 	}
 	
 	// Object Properties
+	public static String hasVulnerability() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasVulnereability";
+		return uri;
+	}
 	public static String hasReference() {
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,
@@ -215,27 +222,7 @@ public class SecurityDBsTBox {
 		return uri;
 	}
 	
-//	public static String hasBaseScore() {
-//		String uri = NamespaceFactory.createTboxNamespace(
-//				NamespaceRegistry.theTboxNameSpace,
-//				OntologyRegistry.securityDBs)
-//				+ "hasBaseScore";
-//		return uri;
-//	}
-//	public static String hasEnvironmentalScore() {
-//		String uri = NamespaceFactory.createTboxNamespace(
-//				NamespaceRegistry.theTboxNameSpace,
-//				OntologyRegistry.securityDBs)
-//				+ "hasEnvironmentalScore";
-//		return uri;
-//	}
-//	public static String hasTemporalScore() {
-//		String uri = NamespaceFactory.createTboxNamespace(
-//				NamespaceRegistry.theTboxNameSpace,
-//				OntologyRegistry.securityDBs)
-//				+ "hasTemporalScore";
-//		return uri;
-//	}
+
 	public static String hasAffect() {
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,
@@ -308,6 +295,13 @@ public class SecurityDBsTBox {
 		return uri;
 	}
 	
+	public static String isLuncedBy() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "isLuncedBy";
+		return uri;
+	}
 	// Data Properties
 	public static String hasSource() {
 		String uri = NamespaceFactory.createTboxNamespace(

@@ -78,7 +78,7 @@ public class EntryHandler extends DefaultHandler{
 			throws SAXException {
 		if(qName.equalsIgnoreCase("entry")){
 			// it should publish the entry uris file
-			newEntry.testReferences();
+//			newEntry.testAffectedProductsList();
 			newEntry = null;
 		}
 	}
@@ -131,6 +131,9 @@ public class EntryHandler extends DefaultHandler{
 		}else if(isRefernceURL){
 			newEntry.setRefernceURL(url);
 			isRefernceURL = false;
+		}else if(isSummary){
+			newEntry.setSummary(new String(ch, start, length));
+			isSummary = false;
 		}
 	}
 
