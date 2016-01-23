@@ -3,7 +3,7 @@
  * http://aseg.cs.concordia.ca
  * http://aseg.cs.concordia.ca/segps
  * Please see the LICENSE file for details.
- */package ca.concordia.cs.aseg.segps.ontologies.publisher.raw_data_parser;
+ */package ca.concordia.cs.aseg.segps.ontologies.publisher.security_raw_data_parser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +12,13 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import ca.concordia.cs.aseg.segps.ontologies.publisher.nvd_puplisher.InstancesLinker;
+
 
 public class EntryHandler extends DefaultHandler{
 	// to catch nvd entries.
 	private Entry newEntry = null;
-		
+	private InstancesLinker instances = null;
 	boolean isCveID, isAffectedProduct, isPublishedDatetime, isLastModifiedDatetime, isScore,
 			isAccessVector, isAccessComplexity, isAuthentication,
 			isConfidentialityImpact, isIntegrityImpact, isAvailabilityImpact,
@@ -78,6 +80,7 @@ public class EntryHandler extends DefaultHandler{
 			throws SAXException {
 		if(qName.equalsIgnoreCase("entry")){
 			// it should publish the entry uris file
+			instances.distributer(newEntry);
 //			newEntry.testAffectedProductsList();
 			newEntry = null;
 		}

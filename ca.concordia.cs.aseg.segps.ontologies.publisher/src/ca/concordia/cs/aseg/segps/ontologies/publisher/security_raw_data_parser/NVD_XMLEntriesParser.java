@@ -4,7 +4,7 @@
  * http://aseg.cs.concordia.ca/segps
  * Please see the LICENSE file for details.
  */
-package ca.concordia.cs.aseg.segps.ontologies.publisher.raw_data_parser;
+package ca.concordia.cs.aseg.segps.ontologies.publisher.security_raw_data_parser;
 
 import java.io.File;
 import java.io.IOException;
