@@ -198,11 +198,11 @@ public class SecurityDBsTBox {
 				+ "hasVulnereability";
 		return uri;
 	}
-	public static String hasReference() {
+	public static String hasReferenceURI() {
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,
 				OntologyRegistry.securityDBs)
-				+ "hasReference";
+				+ "hasReferenceURI";
 		return uri;
 	}
 	

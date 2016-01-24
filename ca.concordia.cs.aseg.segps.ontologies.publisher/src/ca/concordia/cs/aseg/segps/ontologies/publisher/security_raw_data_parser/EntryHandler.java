@@ -18,7 +18,7 @@ import ca.concordia.cs.aseg.segps.ontologies.publisher.nvd_puplisher.InstancesLi
 public class EntryHandler extends DefaultHandler{
 	// to catch nvd entries.
 	private Entry newEntry = null;
-	private InstancesLinker instances = null;
+	private InstancesLinker instances = new InstancesLinker();
 	boolean isCveID, isAffectedProduct, isPublishedDatetime, isLastModifiedDatetime, isScore,
 			isAccessVector, isAccessComplexity, isAuthentication,
 			isConfidentialityImpact, isIntegrityImpact, isAvailabilityImpact,
@@ -28,8 +28,8 @@ public class EntryHandler extends DefaultHandler{
 	private String rt;
 	// to capture href from xml tag attributes
 	private String url;
-	
-	private String rs;
+	// to catputer cwe value from xml tag attributes
+	private String cwe;
 
 	@Override
 	public void startElement(String uri, String localName, String qName,
@@ -61,6 +61,7 @@ public class EntryHandler extends DefaultHandler{
 		}else if(qName.equalsIgnoreCase("cvss:availability-impact")){
 			isAvailabilityImpact= true;
 		}else if(qName.equalsIgnoreCase("vuln:cwe")){
+			cwe = atts.getValue("id");
 			isCweID = true;
 		}else if(qName.equalsIgnoreCase("vuln:references")){
 			rt = atts.getValue("reference_type");
@@ -79,9 +80,9 @@ public class EntryHandler extends DefaultHandler{
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		if(qName.equalsIgnoreCase("entry")){
-			// it should publish the entry uris file
-			instances.distributer(newEntry);
-//			newEntry.testAffectedProductsList();
+			// Pass each collected XML tag <entry .. /entry> into the NVD publisher class
+			this.instances.distributer(this.newEntry);
+			// Empty the Entry object to read another data <entry ... /entry>
 			newEntry = null;
 		}
 	}
@@ -123,7 +124,7 @@ public class EntryHandler extends DefaultHandler{
 			newEntry.setAvailabilityImpact(new String(ch, start, length));
 			isAvailabilityImpact = false;
 		}else if(isCweID){
-			newEntry.setcweID(new String(ch, start, length));
+			newEntry.setcweID(cwe);
 			isCweID = false;
 		}else if(isReferenceType){
 			newEntry.setReferenceType(rt);
