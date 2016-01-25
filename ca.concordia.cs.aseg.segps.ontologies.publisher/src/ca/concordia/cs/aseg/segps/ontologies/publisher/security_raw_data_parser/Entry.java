@@ -178,7 +178,9 @@ public class Entry {
 	public String getRefernceURL(){
 		return this.refernceURL;
 	}
-	
+	public ArrayList<String> getReferencesList(){
+		return referencesList;
+	}
 	public void setSummary(String summary){
 		this.summary = summary;
 	}

@@ -103,5 +103,48 @@ public class SecurityDBs_nvdTBox {
 	/*
 	 * Data Properties 
 	 */
+	public static String hasVendorAdvisoryReference() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs_nvd)
+				+ "hasVendorAdvisoryReference";
+		return uri;
+	}
+	public static String hasPatchReference() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs_nvd)
+				+ "hasPatchReference";
+		return uri;
+	}
+	public static String hasUnknownReference() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs_nvd)
+				+ "hasUnknownReference";
+		return uri;
+	}
+	
+	public static String hasVendorAdvisorySource() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs_nvd)
+				+ "hasVendorAdvisorySource";
+		return uri;
+	}
+	public static String hasPatchSource() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs_nvd)
+				+ "hasPatchSource";
+		return uri;
+	}
+	public static String hasUnknownSource() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs_nvd)
+				+ "hasUnknownSource";
+		return uri;
+	}
 
 }

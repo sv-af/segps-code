@@ -1,5 +1,7 @@
 package ca.concordia.cs.aseg.segps.ontologies.publisher.nvd_puplisher;
 
+import java.util.ArrayList;
+
 import ca.concordia.cs.aseg.segps.ontologies.publisher.ntriples.NtriplesWriter;
 import ca.concordia.cs.aseg.segps.ontologies.publisher.security_raw_data_parser.Entry;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_spanning.abox.VulnerabilitiesABox;
@@ -34,7 +36,9 @@ public class InstancesLinker {
 			writer.addDeclarationTriple(cve, RDF.type(), SecurityDBsTBox.Vulnerability(), false);
 //			writer.addDeclarationTriple(cveRef, RDF.type(), SecurityDBsTBox.Reference(), false);
 //			writer.addIndividualTriple(vulnID, SecurityDBsTBox.hasReferenceURI(), cveRef, false);
-		
+			writer.addIndividualTriple(cve, SecurityDBsTBox.hasVulnerabilityId(), currentEntry.getcveID(), true);
+			
+			//Check if the vulnerability has have weakness type. 
 			if(currentEntry.getcweID() != null){
 				// ABox instances
 			//	String cweID = SecurityDBsABox.WeaknessID(currentEntry.getcweID());
@@ -44,9 +48,22 @@ public class InstancesLinker {
 //				writer.addDeclarationTriple(cweRef, RDF.type(), SecurityDBsTBox.Reference(), false);
 				writer.addIndividualTriple(cve, SecurityDBsTBox.hasWeakness(), cwe, false);
 //				writer.addIndividualTriple(vulnID, SecurityDBsTBox.hasWeaknessId(), cweRef, false);
+				writer.addIndividualTriple(cve, SecurityDBsTBox.hasWeaknessId(), currentEntry.getcweID(), true);
 			}
 			
-
+			// Check if the vulnerability has external sources *e.g. references* 
+			if(currentEntry.getReferencesList() != null){
+				ArrayList<String> rfl = currentEntry.getReferencesList();
+				// rfl contain [Reference type (e.g. Unknown, Patch, ...etc), Reference Source, Reference Location (URL), ...]
+				for(int i=0; i<rfl.size(); ){
+					// ABox instances
+					String ReferenceURI = rfl.get(i+2);
+					// TBox instances
+					writer.addDeclarationTriple(ReferenceURI, RDF.type(), SecurityDBsTBox.Reference(), false);
+					writer.addIndividualTriple(cve, SecurityDBsTBox.hasReferenceURI(), ReferenceURI, false);
+					i+=3;
+				}
+			}
 			
 			// Write the final results into triple-store file
 			writer.flushAndClose();
@@ -56,7 +73,39 @@ public class InstancesLinker {
 		}
 	}
 	
-	private void systemSpecificLayer(Entry currentEntry){
+	private void systemSpecificLayer(Entry currentEntry) {
+		// Check references sources, types, and location.
+		try {
+			if (currentEntry.getReferencesList() != null) {
+				ArrayList<String> rfl = currentEntry.getReferencesList();
+				// rfl contain [Reference type (e.g. Unknown, Patch, ...etc),
+				// Reference Source, Reference Location (URL), ...]
+				for (int i = 0; i < rfl.size();) {
+					// ABox instances
+					String ReferenceType = rfl.get(i);
+					String ReferenceSource = rfl.get(i + 1);
+					String ReferenceURL = rfl.get(i + 2);
+					// TBox instances
+					if (ReferenceType.equalsIgnoreCase("PATCH")) {
+						writer.addDeclarationTriple(ReferenceURL, RDF.type(),SecurityDBs_nvdTBox.PatchReference(), false);
+						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasPatchSource(), ReferenceSource, true);
+					} else if (ReferenceType.equalsIgnoreCase("UNKNOWN")) {
+						writer.addDeclarationTriple(ReferenceURL, RDF.type(),SecurityDBs_nvdTBox.UnknownReference(), false);
+						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasUnknownSource(), ReferenceSource, true);
+					} else if (ReferenceType.equalsIgnoreCase("VENDOR_ADVISORY")) {
+						writer.addDeclarationTriple(ReferenceURL, RDF.type(),SecurityDBs_nvdTBox.VendorAdvisoryReference(),false);
+						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasVendorAdvisorySource(), ReferenceSource, true);
+					}
+					i += 3;
+				}
+			}
+
+			// Write the final results into triple-store file
+			writer.flushAndClose();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void distributer(Entry currentEntry){

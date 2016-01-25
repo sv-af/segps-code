@@ -24,7 +24,7 @@ public class NVD_XMLEntriesParser {
 		try {
 			SAXParser saxParser = factory.newSAXParser();
 			EntryHandler handler = new EntryHandler();
-			saxParser.parse(new File("PATH TO CVE data"), handler);
+			saxParser.parse(new File("C:/Users/TechyGeek/workspace/TestingCodes/nvdcve-2.0-2014.xml"), handler);
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			e.printStackTrace();
 		}
