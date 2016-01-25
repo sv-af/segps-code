@@ -13,30 +13,72 @@ import ca.concordia.cs.aseg.segps.ontologies.urigenerator.registry.OntologyRegis
 public class MainABox{
 	// Classes
 	public static String Product(String Product) {
-		String uri = NamespaceFactory.createTboxNamespace(
-				NamespaceRegistry.theTboxNameSpace, OntologyRegistry.main)
+		String uri = NamespaceFactory.createAboxNamespace(
+				NamespaceRegistry.theAboxNameSpace, OntologyRegistry.main)
 				+ Product;
 		return uri;
 	}
 
 	public static String Release(String Release) {
-		String uri = NamespaceFactory.createTboxNamespace(
-				NamespaceRegistry.theTboxNameSpace, OntologyRegistry.main)
+		String uri = NamespaceFactory.createAboxNamespace(
+				NamespaceRegistry.theAboxNameSpace, OntologyRegistry.main)
 				+ Release;
 		return uri;
 	}
 
 	public static String Artifact(String Artifact) {
-		String uri = NamespaceFactory.createTboxNamespace(
-				NamespaceRegistry.theTboxNameSpace, OntologyRegistry.main)
+		String uri = NamespaceFactory.createAboxNamespace(
+				NamespaceRegistry.theAboxNameSpace, OntologyRegistry.main)
 				+ Artifact;
 		return uri;
 	}
 	
 	public static String Organization(String Organization) {
-		String uri = NamespaceFactory.createTboxNamespace(
-				NamespaceRegistry.theTboxNameSpace, OntologyRegistry.main)
+		String uri = NamespaceFactory.createAboxNamespace(
+				NamespaceRegistry.theAboxNameSpace, OntologyRegistry.main)
 				+ Organization;
 		return uri;
 	}
-}
+	public static String Developer(String Developer) {
+		String uri = NamespaceFactory.createAboxNamespace(
+				NamespaceRegistry.theAboxNameSpace, OntologyRegistry.main)
+				+ Developer;
+		return uri;
+	}
+	public static String File(String file) {
+		String uri = NamespaceFactory.createAboxNamespace(
+				NamespaceRegistry.theAboxNameSpace, OntologyRegistry.main)
+				+ file;
+		return uri;
+	}
+	public static String Directory(String directory) {
+		String uri = NamespaceFactory.createAboxNamespace(
+				NamespaceRegistry.theAboxNameSpace, OntologyRegistry.main)
+				+ directory;
+		return uri;
+	}
+	public static String Milestone(String milestone) {
+		String uri = NamespaceFactory.createAboxNamespace(
+				NamespaceRegistry.theAboxNameSpace, OntologyRegistry.main)
+				+ milestone;
+		return uri;
+	}
+	public static String Activity(String activity) {
+		String uri = NamespaceFactory.createAboxNamespace(
+				NamespaceRegistry.theAboxNameSpace, OntologyRegistry.main)
+				+ activity;
+		return uri;
+	}
+	public static String Stakeholder(String stakeholder) {
+		String uri = NamespaceFactory.createAboxNamespace(
+				NamespaceRegistry.theAboxNameSpace, OntologyRegistry.main)
+				+ stakeholder;
+		return uri;
+	}
+	public static String SeonThing(String seonThing) {
+		String uri = NamespaceFactory.createAboxNamespace(
+				NamespaceRegistry.theAboxNameSpace, OntologyRegistry.main)
+				+ seonThing;
+		return uri;
+	}
+}                    
