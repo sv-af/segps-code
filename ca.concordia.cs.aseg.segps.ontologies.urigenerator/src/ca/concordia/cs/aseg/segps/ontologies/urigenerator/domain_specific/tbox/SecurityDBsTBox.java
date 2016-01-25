@@ -302,6 +302,14 @@ public class SecurityDBsTBox {
 				+ "isLuncedBy";
 		return uri;
 	}
+	
+	public static String hasSummary() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasSummary";
+		return uri;
+	}
 	// Data Properties
 	public static String hasSource() {
 		String uri = NamespaceFactory.createTboxNamespace(
@@ -366,6 +374,15 @@ public class SecurityDBsTBox {
 				+ "hasWeaknessId";
 		return uri;
 	}
+	
+	public static String hasBaseScore() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "hasBaseScore";
+		return uri;
+	}
+	
 	public static String hasAccessComplexity() {
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,

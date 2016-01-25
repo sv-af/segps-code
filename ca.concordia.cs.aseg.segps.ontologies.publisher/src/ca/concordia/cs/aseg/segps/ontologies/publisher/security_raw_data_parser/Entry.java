@@ -44,6 +44,7 @@ public class Entry {
 	public Entry(){
 		affectedProductList = new ArrayList();
 		referencesList = new ArrayList();
+		score = -1;
 	}
 	
 	public void setAffectedProduct(String affectedProduct){
@@ -53,7 +54,7 @@ public class Entry {
 		
 		if(split.length >= 5){
 			this.affectedProduct = split[2] + ":" + split[3] + ":" + split[4]; // e.g. vendor_name:product_name:version
-			affectedProductList.add(this.affectedProduct);
+			affectedProductList.add(affectedProduct);
 			
 			// Classify Affected products into OS or APP
 			if (split[1].equals("/o")) {

@@ -5,13 +5,11 @@ import java.util.ArrayList;
 
 import ca.concordia.cs.aseg.segps.ontologies.publisher.ntriples.NtriplesWriter;
 import ca.concordia.cs.aseg.segps.ontologies.publisher.security_raw_data_parser.Entry;
-import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_spanning.abox.VulnerabilitiesABox;
-import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_spanning.tbox.VulnerabilitiesTBox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox.SecurityDBsABox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.tbox.SecurityDBsTBox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.abox.MainABox;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.tbox.MainTBox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.tbox.RDF;
-import ca.concordia.cs.aseg.segps.ontologies.urigenerator.system_specific.abox.SecurityDBs_nvdABox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.system_specific.tbox.SecurityDBs_nvdTBox;
 
 public class InstancesLinker {
@@ -30,25 +28,19 @@ public class InstancesLinker {
 		
 		try {
 			// ABox instances
-//			String vulnID = SecurityDBsABox.VulnerabilityID(currentEntry.getcveID());
 			String cve = SecurityDBsABox.VulnerabilityURI(currentEntry.getcveID());
 			
 			// TBox instances 
 			writer.addDeclarationTriple(cve, RDF.type(), SecurityDBsTBox.Vulnerability(), false);
-//			writer.addDeclarationTriple(cveRef, RDF.type(), SecurityDBsTBox.Reference(), false);
-//			writer.addIndividualTriple(vulnID, SecurityDBsTBox.hasReferenceURI(), cveRef, false);
 			writer.addIndividualTriple(cve, SecurityDBsTBox.hasVulnerabilityId(), currentEntry.getcveID(), true);
 			
 			//Check if the vulnerability has weakness type. 
 			if(currentEntry.getcweID() != null){
 				// ABox instances
-			//	String cweID = SecurityDBsABox.WeaknessID(currentEntry.getcweID());
 				String cwe = SecurityDBsABox.WeaknessURI(currentEntry.getcweID());
 				// TBox instances
 				writer.addDeclarationTriple(cwe, RDF.type(), SecurityDBsTBox.Weakness(), false);
-//				writer.addDeclarationTriple(cweRef, RDF.type(), SecurityDBsTBox.Reference(), false);
 				writer.addIndividualTriple(cve, SecurityDBsTBox.hasWeakness(), cwe, false);
-//				writer.addIndividualTriple(vulnID, SecurityDBsTBox.hasWeaknessId(), cweRef, false);
 				writer.addIndividualTriple(cve, SecurityDBsTBox.hasWeaknessId(), currentEntry.getcweID(), true);
 			}
 			
@@ -70,18 +62,40 @@ public class InstancesLinker {
 			ArrayList<String> affectedProducts = currentEntry.getAffectedProductList();
 			for(int i=0; i<affectedProducts.size(); i++){
 				// ABox instances
-				String affectedProduct = SecurityDBsABox.AffectedProductr(affectedProducts.get(i));
-				String[] splits = affectedProduct.split(":");
-				String Organization = MainABox.Organization(splits[0]);
-				//test
-				String Procut = MainABox.Product(splits[1]);
-				String Version = splits[2];
 				
+				String temp = affectedProducts.get(i).replaceAll("\\s+","");// removes all whitespace and non visible characters such as tab, \n . 
+				String[] split = temp.split(":"); // e.g.  cpe:/a:vendor_name:product_name:version.	
+				String affectedRelease = split[2] + ":" + split[3] + ":" + split[4]; // e.g. vendor_name:product_name:version
+				String organizationName = MainABox.Organization(split[2]);
+				String procutName = MainABox.Product(split[2]+":"+split[3]);
+				String versionID = split[4];
+			
+				// TBox instances
+
+				// Classify Affected products into OS or APP
+				if (split[1].equals("/o")) {
+					writer.addDeclarationTriple(procutName, RDF.type(), SecurityDBsTBox.OperatingSystem(), false);
+					writer.addIndividualTriple(procutName, MainTBox.dependsOn(), organizationName, false); 
+				}else if(split[1].equals("/a")){
+					writer.addDeclarationTriple(procutName, RDF.type(), SecurityDBsTBox.Application(), false);
+					writer.addIndividualTriple(procutName, MainTBox.dependsOn(), organizationName, false); 
+				}
+				writer.addDeclarationTriple(affectedRelease, RDF.type(), SecurityDBsTBox.AffectedRelease(), false);
+				writer.addDeclarationTriple(organizationName, RDF.type(), MainTBox.Organization(), false);
+				writer.addIndividualTriple(cve, SecurityDBsTBox.affectRelease(), affectedRelease, false);
+				writer.addIndividualTriple(cve, SecurityDBsTBox.affectProduct(), procutName, false);
+				writer.addIndividualTriple(affectedRelease, SecurityDBsTBox.hasVulnerability(), cve, false);
+				writer.addIndividualTriple(procutName, SecurityDBsTBox.hasVulnerability(), cve, false);
+				writer.addIndividualTriple(affectedRelease, SecurityDBsTBox.hasAffectedReleaseVersion(), versionID, true);
+				writer.addIndividualTriple(affectedRelease, SecurityDBsTBox.hasAffectedReleaseName(), split[3], true);
 			}
-			// Write the final results into triple-store file
-			//writer.flushAndClose();
+			
+			if(currentEntry.getSummary() != null){
+				String summaryURI = SecurityDBsABox.Summary(currentEntry.getSummary());
+				writer.addIndividualTriple(summaryURI, RDF.type(), SecurityDBsTBox.Summary(), false);
+				writer.addIndividualTriple(cve, SecurityDBsTBox.hasSummary(), summaryURI, false); // this might be changed to data-property !!
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -117,9 +131,37 @@ public class InstancesLinker {
 					i += 3;
 				}
 			}
-
-			// Write the final results into triple-store file
-			//writer.flushAndClose();
+			
+			double score = currentEntry.getScore();
+			if(score != -1){
+				//ABox instances
+				String scoreURI = SecurityDBsABox.Score(String.valueOf(score));
+				writer.addDeclarationTriple(scoreURI, RDF.type(), SecurityDBsTBox.BaseScoreMertrics(), false);
+				String severityLevel = null;
+				/**
+				 * 1. Vulnerabilities are labelled "Low" severity if they have a score of 0.0-3.9.
+				 * 2. Vulnerabilities will be labelled "Medium" severity if they have a score of 4.0-6.9.
+				 * 3. Vulnerabilities will be labelled "High" severity if they have a score of 7.0-10.0.
+				 */
+				if(score <= 3.9){
+					severityLevel = SecurityDBs_nvdTBox.Low();
+					writer.addIndividualTriple(cve, SecurityDBsTBox.hasSeverity(), severityLevel, false);
+				}else if(score > 4 && score < 6.9){
+					severityLevel = SecurityDBs_nvdTBox.Medium();
+					writer.addIndividualTriple(cve, SecurityDBsTBox.hasSeverity(), severityLevel, false);
+				}else if(score >= 7.0 ){
+					severityLevel = SecurityDBs_nvdTBox.High();
+					writer.addIndividualTriple(cve, SecurityDBsTBox.hasSeverity(), severityLevel, false);
+				}
+				writer.addDeclarationTriple(severityLevel, RDF.type(), SecurityDBsTBox.VulnerabilitySeverity(), false);
+				writer.addIndividualTriple(severityLevel, SecurityDBsTBox.hasSeverityScore(), scoreURI, false);
+				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasAccessComplexity(), currentEntry.getAccessComplexity(), true);
+				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasAccessVector(), currentEntry.getAccessVector(), true);
+				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasAuthentication(), currentEntry.getAuthentication(), true);
+				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasAvailabilityImpact(), currentEntry.getAvailabilityImpact(),true);
+				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasIntegrityImpact(), currentEntry.getIntegrityImpact(), true);
+				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasConfidentialityImpact(), currentEntry.getConfidentialityImpact(), true);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -144,7 +186,6 @@ public class InstancesLinker {
 		try {
 			writer.flushAndClose();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

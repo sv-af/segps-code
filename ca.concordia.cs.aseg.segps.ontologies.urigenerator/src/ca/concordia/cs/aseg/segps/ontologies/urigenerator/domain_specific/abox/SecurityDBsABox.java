@@ -37,9 +37,14 @@ public class SecurityDBsABox {
 		return uri;
 	}
 	
-	public static String AffectedProductr(String AffectedProduct) {
+	public static String AffectedProduct(String AffectedProduct) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theAboxNameSpace, OntologyRegistry.securityDBs)
 				+ AffectedProduct;
+		return uri;
+	}
+	public static String AffectedRelease(String AffectedRelease) {
+		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theAboxNameSpace, OntologyRegistry.securityDBs)
+				+ AffectedRelease;
 		return uri;
 	}
 	public static String Application(String Application) {
@@ -53,9 +58,21 @@ public class SecurityDBsABox {
 		return uri;
 	}
 	
-	public static void main(String[] args) {
-		String vulnerability = WeaknessURI("CWE-199");
-		System.out.println(vulnerability);
+	public static String Score(String Score) {
+		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theAboxNameSpace, OntologyRegistry.securityDBs)
+				+ Score;
+		return uri;
 	}
+	
+	public static String Summary(String Summary) {
+		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theAboxNameSpace, OntologyRegistry.securityDBs)
+				+ Summary;
+		return uri;
+	}
+	
+//	public static void main(String[] args) {
+//		String vulnerability = WeaknessURI("CWE-199");
+//		System.out.println(vulnerability);
+//	}
 
 }
