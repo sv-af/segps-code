@@ -73,6 +73,7 @@ public class InstancesLinker {
 				String affectedProduct = SecurityDBsABox.AffectedProductr(affectedProducts.get(i));
 				String[] splits = affectedProduct.split(":");
 				String Organization = MainABox.Organization(splits[0]);
+				//test
 				String Procut = MainABox.Product(splits[1]);
 				String Version = splits[2];
 				
