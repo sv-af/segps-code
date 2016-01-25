@@ -38,6 +38,26 @@ public class MavenTBox {
 		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.maven) + "hasGroupID";
 		return uri;
 	}
+
+	public static String hasArtifactID() {
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasArtifactID";
+		return uri;
+	}
+
+	public static String hasDependencyScope() {
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasDependencyScope";
+		return uri;
+	}
+
+	public static String hasDependencyType() {
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasDependencyType";
+		return uri;
+	}
+
+	public static String isOptionalDependency() {
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "isOptionalDependency";
+		return uri;
+	}
 	
 	
 }
