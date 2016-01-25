@@ -134,13 +134,13 @@ public class SecurityDBsTBox {
 		return uri;
 	}
 	
-	public static String LifeCycle() {
-		String uri = NamespaceFactory.createTboxNamespace(
-				NamespaceRegistry.theTboxNameSpace,
-				OntologyRegistry.securityDBs)
-				+ "LifeCycle";
-		return uri;
-	}
+//	public static String LifeCycle() {
+//		String uri = NamespaceFactory.createTboxNamespace(
+//				NamespaceRegistry.theTboxNameSpace,
+//				OntologyRegistry.securityDBs)
+//				+ "LifeCycle";
+//		return uri;
+//	}
 	
 	public static String Impacts() {
 		String uri = NamespaceFactory.createTboxNamespace(

@@ -33,4 +33,10 @@ public class MainTBox {
 				+ "Artifact";
 		return uri;
 	}
+	public static String Organization() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace, OntologyRegistry.main)
+				+ "Organization";
+		return uri;
+	}
 }

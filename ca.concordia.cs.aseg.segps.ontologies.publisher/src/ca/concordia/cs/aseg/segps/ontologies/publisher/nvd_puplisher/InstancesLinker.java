@@ -1,5 +1,6 @@
 package ca.concordia.cs.aseg.segps.ontologies.publisher.nvd_puplisher;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import ca.concordia.cs.aseg.segps.ontologies.publisher.ntriples.NtriplesWriter;
@@ -25,7 +26,6 @@ public class InstancesLinker {
 	}
 	
 	private void domainSpecificLayer(Entry currentEntry){
-		writer = new NtriplesWriter("out.nt",100, 100);
 		
 		try {
 			// ABox instances
@@ -66,7 +66,7 @@ public class InstancesLinker {
 			}
 			
 			// Write the final results into triple-store file
-			writer.flushAndClose();
+			//writer.flushAndClose();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,6 +74,7 @@ public class InstancesLinker {
 	}
 	
 	private void systemSpecificLayer(Entry currentEntry) {
+		String cve = SecurityDBsABox.VulnerabilityURI(currentEntry.getcveID());
 		// Check references sources, types, and location.
 		try {
 			if (currentEntry.getReferencesList() != null) {
@@ -85,23 +86,27 @@ public class InstancesLinker {
 					String ReferenceType = rfl.get(i);
 					String ReferenceSource = rfl.get(i + 1);
 					String ReferenceURL = rfl.get(i + 2);
+										
 					// TBox instances
 					if (ReferenceType.equalsIgnoreCase("PATCH")) {
 						writer.addDeclarationTriple(ReferenceURL, RDF.type(),SecurityDBs_nvdTBox.PatchReference(), false);
 						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasPatchSource(), ReferenceSource, true);
+						writer.addIndividualTriple(cve, SecurityDBsTBox.hasStatus(), SecurityDBs_nvdTBox.Patched(), false);
 					} else if (ReferenceType.equalsIgnoreCase("UNKNOWN")) {
 						writer.addDeclarationTriple(ReferenceURL, RDF.type(),SecurityDBs_nvdTBox.UnknownReference(), false);
 						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasUnknownSource(), ReferenceSource, true);
-					} else if (ReferenceType.equalsIgnoreCase("VENDOR_ADVISORY")) {
+						writer.addIndividualTriple(cve, SecurityDBsTBox.hasStatus(), SecurityDBs_nvdTBox.Unknown(), false);
+					} else if (ReferenceType.equalsIgnoreCase("VENDOR_ADVISORY") || ReferenceSource.equalsIgnoreCase("CONFIRM")) {
 						writer.addDeclarationTriple(ReferenceURL, RDF.type(),SecurityDBs_nvdTBox.VendorAdvisoryReference(),false);
 						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasVendorAdvisorySource(), ReferenceSource, true);
+						writer.addIndividualTriple(cve, SecurityDBsTBox.hasStatus(),SecurityDBs_nvdTBox.Detected(), false);
 					}
 					i += 3;
 				}
 			}
 
 			// Write the final results into triple-store file
-			writer.flushAndClose();
+			//writer.flushAndClose();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -111,7 +116,8 @@ public class InstancesLinker {
 	public void distributer(Entry currentEntry){
 		
 		this.currentEntry = currentEntry;
-		
+		writer = new NtriplesWriter("out.nt",100000, 500000);
+
 		System.out.println("Mapping "+ this.currentEntry.getcveID()+" facts into SEVONT layers");
 		
 		// Populate triples for General layer
@@ -122,6 +128,12 @@ public class InstancesLinker {
 		domainSpecificLayer(this.currentEntry);
 		// Populate triples for System-Specific layer
 		systemSpecificLayer(this.currentEntry);
+		try {
+			writer.flushAndClose();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
