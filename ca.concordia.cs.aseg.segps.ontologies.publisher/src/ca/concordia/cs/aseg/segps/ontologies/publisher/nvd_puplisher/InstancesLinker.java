@@ -38,7 +38,7 @@ public class InstancesLinker {
 //			writer.addIndividualTriple(vulnID, SecurityDBsTBox.hasReferenceURI(), cveRef, false);
 			writer.addIndividualTriple(cve, SecurityDBsTBox.hasVulnerabilityId(), currentEntry.getcveID(), true);
 			
-			//Check if the vulnerability has have weakness type. 
+			//Check if the vulnerability has weakness type. 
 			if(currentEntry.getcweID() != null){
 				// ABox instances
 			//	String cweID = SecurityDBsABox.WeaknessID(currentEntry.getcweID());
@@ -65,6 +65,16 @@ public class InstancesLinker {
 				}
 			}
 			
+			// Mapping the vulnerable products facts into the ontology concepts and properties. 
+			ArrayList<String> affectedProducts = currentEntry.getAffectedProductList();
+			for(int i=0; i<affectedProducts.size(); i++){
+				String affectedProduct = affectedProducts.get(i);
+				String[] splits = affectedProduct.split(":");
+				String Organization = splits[0];
+				String Procut = splits[1];
+				String Version = splits[2];
+				
+			}
 			// Write the final results into triple-store file
 			//writer.flushAndClose();
 		} catch (Exception e) {

@@ -53,7 +53,7 @@ public class Entry {
 		
 		if(split.length >= 5){
 			this.affectedProduct = split[2] + ":" + split[3] + ":" + split[4]; // e.g. vendor_name:product_name:version
-			affectedProductList.add(affectedProduct);
+			affectedProductList.add(this.affectedProduct);
 			
 			// Classify Affected products into OS or APP
 			if (split[1].equals("/o")) {
