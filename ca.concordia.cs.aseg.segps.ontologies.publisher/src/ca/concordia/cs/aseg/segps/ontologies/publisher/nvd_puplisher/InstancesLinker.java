@@ -9,6 +9,7 @@ import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_spanning.abox.V
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_spanning.tbox.VulnerabilitiesTBox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox.SecurityDBsABox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.tbox.SecurityDBsTBox;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.abox.MainABox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.tbox.RDF;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.system_specific.abox.SecurityDBs_nvdABox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.system_specific.tbox.SecurityDBs_nvdTBox;
@@ -68,10 +69,11 @@ public class InstancesLinker {
 			// Mapping the vulnerable products facts into the ontology concepts and properties. 
 			ArrayList<String> affectedProducts = currentEntry.getAffectedProductList();
 			for(int i=0; i<affectedProducts.size(); i++){
-				String affectedProduct = affectedProducts.get(i);
+				// ABox instances
+				String affectedProduct = SecurityDBsABox.AffectedProductr(affectedProducts.get(i));
 				String[] splits = affectedProduct.split(":");
-				String Organization = splits[0];
-				String Procut = splits[1];
+				String Organization = MainABox.Organization(splits[0]);
+				String Procut = MainABox.Product(splits[1]);
 				String Version = splits[2];
 				
 			}
