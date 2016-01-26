@@ -22,9 +22,15 @@ public class NVD_XMLEntriesParser {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		
 		try {
-			SAXParser saxParser = factory.newSAXParser();
-			EntryHandler handler = new EntryHandler();
-			saxParser.parse(new File("C:/Users/TechyGeek/workspace/TestingCodes/nvdcve-2.0-2014.xml"), handler);
+			File corpusPath = new File("C:/Users/TechyGeek/Desktop/nvd/");
+			File[] nvdXMLFeeds = corpusPath.listFiles();
+			for (int i = 0; i <  nvdXMLFeeds.length; i++) {
+				System.out.println("Parsing "+nvdXMLFeeds[i].getName() +"...");
+				SAXParser saxParser = factory.newSAXParser();
+				EntryHandler handler = new EntryHandler();
+				saxParser.parse(new File(nvdXMLFeeds[i].getAbsolutePath()), handler);
+			}
+			
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			e.printStackTrace();
 		}

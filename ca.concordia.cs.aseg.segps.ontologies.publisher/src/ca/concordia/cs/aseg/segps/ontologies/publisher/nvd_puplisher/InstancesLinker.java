@@ -100,7 +100,7 @@ public class InstancesLinker {
 		}
 	}
 	
-	private void systemSpecificLayer(Entry currentEntry) {
+	private void nvd_SystemSpecificLayer(Entry currentEntry) {
 		String cve = SecurityDBsABox.VulnerabilityURI(currentEntry.getcveID());
 		// Check references sources, types, and location.
 		try {
@@ -173,7 +173,7 @@ public class InstancesLinker {
 		this.currentEntry = currentEntry;
 		writer = new NtriplesWriter("out.nt",100000, 500000);
 
-		System.out.println("Mapping "+ this.currentEntry.getcveID()+" facts into SEVONT layers");
+//		System.out.println("Mapping "+ this.currentEntry.getcveID()+" facts into SEVONT layers");
 		
 		// Populate triples for General layer
 		generalLayer(this.currentEntry);
@@ -182,7 +182,7 @@ public class InstancesLinker {
 		// Populate triples for Domain-Specific layer
 		domainSpecificLayer(this.currentEntry);
 		// Populate triples for System-Specific layer
-		systemSpecificLayer(this.currentEntry);
+		nvd_SystemSpecificLayer(this.currentEntry);
 		try {
 			writer.flushAndClose();
 		} catch (IOException e) {
