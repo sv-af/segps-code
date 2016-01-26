@@ -66,5 +66,10 @@ public class BuildTBox {
 		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasExclusion";
 		return uri;
 	}
+
+	public static String excludesProduct() {
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "excludesProduct";
+		return uri;
+	}
 	
 }
