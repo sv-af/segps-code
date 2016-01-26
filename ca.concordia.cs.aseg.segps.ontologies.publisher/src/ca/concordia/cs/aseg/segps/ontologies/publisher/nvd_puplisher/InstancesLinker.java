@@ -65,7 +65,7 @@ public class InstancesLinker {
 				
 				String temp = affectedProducts.get(i).replaceAll("\\s+","");// removes all whitespace and non visible characters such as tab, \n . 
 				String[] split = temp.split(":"); // e.g.  cpe:/a:vendor_name:product_name:version.	
-				String affectedRelease = split[2] + ":" + split[3] + ":" + split[4]; // e.g. vendor_name:product_name:version
+				String affectedRelease = SecurityDBsABox.AffectedRelease(split[2] + ":" + split[3] + ":" + split[4]); // e.g. vendor_name:product_name:version
 				String organizationName = MainABox.Organization(split[2]);
 				String procutName = MainABox.Product(split[2]+":"+split[3]);
 				String versionID = split[4];
