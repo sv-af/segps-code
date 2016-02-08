@@ -6,13 +6,10 @@
  */
 package ca.concordia.cs.aseg.segps.ontologies.urigenerator.registry;
 
-import java.util.concurrent.ThreadPoolExecutor;
-
 public class NamespaceRegistry {
 
-	//static private String aseg="http://aseg.cs.concordia.ca/segps";
-	//static private String slicer="http://slicer.cs.concordia.ca";
 	static public String theTboxNameSpace="http://aseg.cs.concordia.ca/segps/ontologies";
 	static public String theAboxNameSpace=theTboxNameSpace;
-	
+	static public String theSEONTboxNameSpace="http://se-on.org/ontologies";
+	static public String theSEONAboxNameSpace=theSEONTboxNameSpace;
 }

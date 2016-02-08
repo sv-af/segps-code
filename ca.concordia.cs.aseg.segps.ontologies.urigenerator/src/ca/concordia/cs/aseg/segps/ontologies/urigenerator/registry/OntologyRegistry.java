@@ -8,8 +8,10 @@ package ca.concordia.cs.aseg.segps.ontologies.urigenerator.registry;
 
 public class OntologyRegistry {
 
-	// General ontologies registry
-	public static String main="general/2015/02/main.owl#";
+	// SE-ON ontologies registry
+	public static String main="general/2012/02/main.owl#";
+	public static String code="domain-specific/2012/02/code.owl#";
+	public static String java="system-specific/2012/02/java.owl#";
 
 	// Build System ontologies registry
 	public static String build="domain-specific/2015/02/build.owl#";
