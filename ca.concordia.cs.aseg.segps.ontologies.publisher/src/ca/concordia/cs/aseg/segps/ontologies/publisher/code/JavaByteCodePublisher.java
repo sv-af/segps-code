@@ -1,0 +1,187 @@
+package ca.concordia.cs.aseg.segps.ontologies.publisher.code;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.jar.JarFile;
+
+import ca.concordia.cs.aseg.segps.code.bytecode.BytecodeReader;
+import ca.concordia.cs.aseg.segps.ontologies.publisher.ntriples.NtriplesWriter;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox.BuildABox;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox.CodeABox;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.tbox.CodeTBox;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.abox.MainABox;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.tbox.MainTBox;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.tbox.RDF;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.system_specific.tbox.JavaTBox;
+import gr.uom.java.xmi.AccessedMember;
+import gr.uom.java.xmi.MethodCall;
+import gr.uom.java.xmi.UMLClass;
+import gr.uom.java.xmi.UMLGeneralization;
+import gr.uom.java.xmi.UMLModel;
+import gr.uom.java.xmi.UMLOperation;
+import gr.uom.java.xmi.UMLParameter;
+import gr.uom.java.xmi.UMLRealization;
+
+public class JavaByteCodePublisher {
+
+	public void publish(File file, String projectURI, List<File> dependencies) {
+		JarFile jarFile;
+		try {
+			jarFile = new JarFile(file);
+			UMLModel model = new BytecodeReader(jarFile).getUmlModel();
+			List<UMLModel> dependentModels = new ArrayList<>();
+			for (File f : dependencies) {
+				jarFile = new JarFile(f);
+				dependentModels.add(new BytecodeReader(jarFile).getUmlModel());
+			}
+			createTriples(model, projectURI, dependentModels);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void createTriples(UMLModel model, String projectURI, List<UMLModel> dependentModels) throws Exception {
+		int pos = projectURI.indexOf("#")+1;
+		String project = projectURI.substring(pos);
+		NtriplesWriter writer = new NtriplesWriter("out.nt", 100000, 500000);
+		List<UMLClass> classes = model.getClassList();
+		for (UMLClass clazz : classes) {
+			String classFileURI = MainABox.File(clazz.getSourceFile());
+			writer.addIndividualTriple(projectURI, MainTBox.containsFile(), classFileURI, false);			
+			String packageName = clazz.getPackageName();
+			String pkgURI = CodeABox.Namespace(project, packageName);
+			writer.addDeclarationTriple(pkgURI, RDF.type(), CodeTBox.Namespace(), false);
+			writer.addIndividualTriple(classFileURI, CodeTBox.containsCodeEntity(), pkgURI, false);	
+			String classURI = null;
+			if (clazz.isInterface()) {
+				classURI = CodeABox.InterfaceType(project, clazz.getName());
+				writer.addDeclarationTriple(classURI, RDF.type(), CodeTBox.InterfaceType(), false);
+			} else {
+				classURI = CodeABox.ClassType(project, clazz.getName());
+				writer.addDeclarationTriple(classURI, RDF.type(), CodeTBox.ClassType(), false);
+			}
+			writer.addDeclarationTriple(classURI, CodeTBox.hasCodeIdentifier(), clazz.getName(), true);
+			writer.addIndividualTriple(classURI, CodeTBox.isNamespaceMemberOf(), pkgURI, false);
+			String classVisibility = clazz.getVisibility();
+			String visibilityURI = null;
+			switch (classVisibility) {
+			case "public":
+				visibilityURI = JavaTBox.publicVisibility();
+			case "private":
+				visibilityURI = JavaTBox.privateVisibility();
+			case "protected":
+				visibilityURI = JavaTBox.protectedVisibility();
+			}
+			if (visibilityURI != null) {
+				writer.addIndividualTriple(classURI, CodeTBox.hasAccessModifier(), visibilityURI, false);
+			}
+			/*
+			 * Get method declarations and their contained invocations Create
+			 * associated triples (including returntype, parameters and access
+			 * modifiers for the method declarations)
+			 */
+			for (UMLOperation operation : clazz.getOperations()) {
+				System.out.println("\t method: " + operation.toShortString());
+				String operationURI = null;
+				if (operation.isConstructor()) {
+					operationURI = CodeABox.Constructor(project+":"+clazz.toString()+":"+operation.toShortString());
+					writer.addDeclarationTriple(operationURI, RDF.type(), CodeTBox.Constructor(), false);
+					writer.addDeclarationTriple(operationURI, CodeTBox.isDeclaredConstructorOf(), classURI, false);
+					System.out.println("\t constructor: " + operation.toShortString());
+				} else {
+					operationURI = CodeABox.Method(project+":"+clazz.toString()+":"+operation.toShortString());
+					writer.addDeclarationTriple(operationURI, RDF.type(), CodeTBox.Method(), false);
+					writer.addDeclarationTriple(classURI, CodeTBox.declaresMethod(), operationURI, false);
+					/*
+					 * Create URI and triples for return type. How to
+					 * differentiate between primitive and complex return types
+					 */
+					String returnType = operation.getReturnParameter().toString();
+					String returnURI = null;
+					if (returnType.startsWith("java")) {
+						returnType = returnType.replace("/", ".");
+						returnURI = CodeABox.PrimitiveType(returnType);
+					} else {
+						returnURI = CodeABox.ClassType(project, clazz.toString());
+					}
+					writer.addDeclarationTriple(operationURI, CodeTBox.hasReturnType(), returnURI, false);
+					/*
+					 * Create URIs and triples for method invocations
+					 */
+					Set<AccessedMember> members = operation.getAccessedMembers();
+					for (AccessedMember member : members) {
+						if (member instanceof MethodCall) {
+							//System.out.println("\t\tinvocation: ");
+							MethodCall call = (MethodCall) member;
+							//System.out.println("\t\t\t name: " + call.getMethodName());
+							//System.out.println("\t\t\t owner: " + call.getOriginClassName());
+							//System.out.println("\t\t\t constructor: " + call.isConstructorCall());
+							String invocationURI = null;
+							if (call.isConstructorCall()) {
+								invocationURI = CodeABox.Constructor("");
+							} else {
+								invocationURI = CodeABox.Method("");
+							}
+							writer.addDeclarationTriple(operationURI, CodeTBox.invokesMethod(), invocationURI, false);
+						}
+					}
+
+				}
+				writer.addDeclarationTriple(operationURI, CodeTBox.hasCodeIdentifier(), operation.toShortString(), true);
+				/* Create URI and triples for access modifier */
+				String accessURI = null;
+				switch (operation.getVisibility()) {
+				case "public":
+					accessURI = JavaTBox.publicVisibility();
+				case "protected":
+					accessURI = JavaTBox.protectedVisibility();
+				case "private":
+					accessURI = JavaTBox.privateVisibility();
+				}
+				if (accessURI != null)
+					writer.addDeclarationTriple(operationURI, CodeTBox.hasAccessModifier(), accessURI, false);
+				/* Create URIs and triples for method parameters */
+				System.out.println("\t\t params: " + operation.getParameters());
+				int position = 1;
+				for (UMLParameter parameter : operation.getParameters()) {
+					String paramString = parameter.toString().trim();
+					if (!paramString.equals("void")) {
+						String paramURI = CodeABox.Parameter(paramString);
+						writer.addDeclarationTriple(paramURI, RDF.type(), CodeTBox.Parameter(), false);
+						writer.addDeclarationTriple(operationURI, CodeTBox.hasParameter(), paramURI, false);
+						writer.addDeclarationTriple(paramURI, CodeTBox.hasPosition(), String.valueOf(position), true);
+						position++;
+					}
+					
+				}
+				System.out.println("\t\t name: " + operation.getName());
+			}
+		}
+		/*
+		 * Get Realizations and Generalizations within the model. Create triples
+		 * for these
+		 */
+		List<UMLRealization> realizations = model.getRealizationList();
+		List<UMLGeneralization> generalizations = model.getGeneralizationList();
+		for (UMLRealization realization : realizations) {
+			String clientURI = CodeABox.ClassType(projectURI, realization.getClient());
+			String providerURI = CodeABox.ClassType(projectURI, realization.getSupplier());
+			writer.addIndividualTriple(clientURI, CodeTBox.implementsInterface(), providerURI, false);
+			// System.out.println("Realization: " + realization);
+		}
+		for (UMLGeneralization generalization : generalizations) {
+			String clientURI = CodeABox.ClassType(projectURI, generalization.getChild());
+			String providerURI = CodeABox.ClassType(projectURI, generalization.getParent());
+			writer.addIndividualTriple(clientURI, CodeTBox.hasSuperClass(), providerURI, false);
+			// System.out.println("Generalization: " + generalization);
+		}
+		writer.flushAndClose();
+	}
+
+	public static void main(String[] args) {
+		String projectURI = BuildABox.BuildRelease("aseg:testCallgraph:1.0");
+		new JavaByteCodePublisher().publish(new File("testCallgraph.jar"), projectURI, new ArrayList<File>());
+	}
+}
