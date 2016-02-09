@@ -171,7 +171,7 @@ public class InstancesLinker {
 	public void distributer(Entry currentEntry){
 		
 		this.currentEntry = currentEntry;
-		writer = new NtriplesWriter("out.nt",100000, 500000);
+		writer = new NtriplesWriter("sevont.nt",100000, 500000);
 
 //		System.out.println("Mapping "+ this.currentEntry.getcveID()+" facts into SEVONT layers");
 		
