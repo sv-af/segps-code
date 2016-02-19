@@ -58,15 +58,15 @@ public class SecurityDBsABox {
 		return uri;
 	}
 	
-	public static String Score(String Score) {
+	public static String Score(String cve, String score) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theAboxNameSpace, OntologyRegistry.securityDBs)
-				+ Score;
+				+ cve+":socre:"+score;
 		return uri;
 	}
 	
-	public static String Summary(String Summary) {
+	public static String Summary(String cve_summary) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theAboxNameSpace, OntologyRegistry.securityDBs)
-				+ Summary;
+				+ cve_summary+"_Summary";
 		return uri;
 	}
 	

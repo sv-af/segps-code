@@ -303,7 +303,7 @@ public class SecurityDBsTBox {
 		return uri;
 	}
 	
-	public static String hasSummary() {
+	public static String hasSummary() { // you can use hasDescription from main.owl
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,
 				OntologyRegistry.securityDBs)

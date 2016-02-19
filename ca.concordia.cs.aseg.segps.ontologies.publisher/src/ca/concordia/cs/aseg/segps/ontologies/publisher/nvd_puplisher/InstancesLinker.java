@@ -71,29 +71,32 @@ public class InstancesLinker {
 				String versionID = split[4];
 			
 				// TBox instances
-
 				// Classify Affected products into OS or APP
 				if (split[1].equals("/o")) {
 					writer.addDeclarationTriple(procutName, RDF.type(), SecurityDBsTBox.OperatingSystem(), false);
-					writer.addIndividualTriple(procutName, MainTBox.dependsOn(), organizationName, false); 
+					writer.addIndividualTriple(procutName, MainTBox.belongsToOrgaization(), organizationName, false); 
 				}else if(split[1].equals("/a")){
 					writer.addDeclarationTriple(procutName, RDF.type(), SecurityDBsTBox.Application(), false);
-					writer.addIndividualTriple(procutName, MainTBox.dependsOn(), organizationName, false); 
+					writer.addIndividualTriple(procutName, MainTBox.belongsToOrgaization(), organizationName, false); 
 				}
+				
 				writer.addDeclarationTriple(affectedRelease, RDF.type(), SecurityDBsTBox.AffectedRelease(), false);
 				writer.addDeclarationTriple(organizationName, RDF.type(), MainTBox.Organization(), false);
 				writer.addIndividualTriple(cve, SecurityDBsTBox.affectRelease(), affectedRelease, false);
 				writer.addIndividualTriple(cve, SecurityDBsTBox.affectProduct(), procutName, false);
-				writer.addIndividualTriple(affectedRelease, SecurityDBsTBox.hasVulnerability(), cve, false);
-				writer.addIndividualTriple(procutName, SecurityDBsTBox.hasVulnerability(), cve, false);
+				// We might delete 1 and 2 if the reasoner will be able to infer the inverse relations
+				// hasVulnerability inverse of affectProduct
+				/**1**/writer.addIndividualTriple(affectedRelease, SecurityDBsTBox.hasVulnerability(), cve, false);
+				/**2**/writer.addIndividualTriple(procutName, SecurityDBsTBox.hasVulnerability(), cve, false);
 				writer.addIndividualTriple(affectedRelease, SecurityDBsTBox.hasAffectedReleaseVersion(), versionID, true);
 				writer.addIndividualTriple(affectedRelease, SecurityDBsTBox.hasAffectedReleaseName(), split[3], true);
 			}
 			
 			if(currentEntry.getSummary() != null){
-				String summaryURI = SecurityDBsABox.Summary(currentEntry.getSummary());
+				String summaryURI = SecurityDBsABox.Summary(currentEntry.getcveID());
 				writer.addIndividualTriple(summaryURI, RDF.type(), SecurityDBsTBox.Summary(), false);
-				writer.addIndividualTriple(cve, SecurityDBsTBox.hasSummary(), summaryURI, false); // this might be changed to data-property !!
+	//			writer.addIndividualTriple(cve, SecurityDBsTBox.hasSummary(), summaryURI, false); // this might be changed to data-property !!
+				writer.addIndividualTriple(summaryURI, MainTBox.hasDescription(), currentEntry.getSummary(), true);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,7 +112,7 @@ public class InstancesLinker {
 				// rfl contain [Reference type (e.g. Unknown, Patch, ...etc),
 				// Reference Source, Reference Location (URL), ...]
 				for (int i = 0; i < rfl.size();) {
-					// ABox instances
+					
 					String ReferenceType = rfl.get(i);
 					String ReferenceSource = rfl.get(i + 1);
 					String ReferenceURL = rfl.get(i + 2);
@@ -122,7 +125,10 @@ public class InstancesLinker {
 					} else if (ReferenceType.equalsIgnoreCase("UNKNOWN")) {
 						writer.addDeclarationTriple(ReferenceURL, RDF.type(),SecurityDBs_nvdTBox.UnknownReference(), false);
 						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasUnknownSource(), ReferenceSource, true);
-						writer.addIndividualTriple(cve, SecurityDBsTBox.hasStatus(), SecurityDBs_nvdTBox.Unknown(), false);
+						// trying to optmize the vulnerablility status,
+						// so far, we can catputre the patched and detected status, 
+						// and if non of these status happen, then the vulnerability status should be still unkown.
+				//		writer.addIndividualTriple(cve, SecurityDBsTBox.hasStatus(), SecurityDBs_nvdTBox.Unknown(), false); 
 					} else if (ReferenceType.equalsIgnoreCase("VENDOR_ADVISORY") || ReferenceSource.equalsIgnoreCase("CONFIRM")) {
 						writer.addDeclarationTriple(ReferenceURL, RDF.type(),SecurityDBs_nvdTBox.VendorAdvisoryReference(),false);
 						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasVendorAdvisorySource(), ReferenceSource, true);
@@ -135,7 +141,7 @@ public class InstancesLinker {
 			double score = currentEntry.getScore();
 			if(score != -1){
 				//ABox instances
-				String scoreURI = SecurityDBsABox.Score(String.valueOf(score));
+				String scoreURI = SecurityDBsABox.Score(currentEntry.getcveID(),String.valueOf(score));
 				writer.addDeclarationTriple(scoreURI, RDF.type(), SecurityDBsTBox.BaseScoreMertrics(), false);
 				String severityLevel = null;
 				/**
