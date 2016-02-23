@@ -10,6 +10,7 @@ package ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.namespace.NamespaceFactory;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.registry.NamespaceRegistry;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.registry.OntologyRegistry;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.utils.URLCleaner;
 
 public class CodeABox {
 
@@ -28,7 +29,7 @@ public class CodeABox {
 
 	public static String ClassType(String project, String fullQualifiedClassName) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace, OntologyRegistry.code)
-				+ project+":"+fullQualifiedClassName;
+				+ URLCleaner.clean(project)+":"+URLCleaner.clean(fullQualifiedClassName);
 		return uri;
 	}
 
@@ -46,13 +47,13 @@ public class CodeABox {
 
 	public static String Constructor(String project, String fullQualifiedOwner, String constructorSignature) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace, OntologyRegistry.code)
-				+ project+":"+fullQualifiedOwner+":"+constructorSignature;
+				+ URLCleaner.clean(project)+":"+URLCleaner.clean(fullQualifiedOwner)+":"+URLCleaner.clean(constructorSignature);
 		return uri;
 	}
 	
 	public static String Constructor(String fullQualifiedOwnerWithProject, String constructorSignature) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace, OntologyRegistry.code)
-				+ fullQualifiedOwnerWithProject+":"+constructorSignature;
+				+ URLCleaner.clean(fullQualifiedOwnerWithProject)+":"+URLCleaner.clean(constructorSignature);
 		return uri;
 	}
 
@@ -82,37 +83,37 @@ public class CodeABox {
 
 	public static String InterfaceType(String project, String fullQualifiedInterfaceName) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace, OntologyRegistry.code)
-				+ project+":"+fullQualifiedInterfaceName;
+				+ URLCleaner.clean(project)+":"+URLCleaner.clean(fullQualifiedInterfaceName);
 		return uri;
 	}
 
 	public static String Method(String project, String fullQualifiedOwner,String methodSignature) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace, OntologyRegistry.code)
-				+ project+":"+fullQualifiedOwner+":"+methodSignature;
+				+ URLCleaner.clean(project)+":"+URLCleaner.clean(fullQualifiedOwner)+":"+URLCleaner.clean(methodSignature);
 		return uri;
 	}
 	
 	public static String Method(String fullQualifiedOwnerWithProject,String methodSignature) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace, OntologyRegistry.code)
-				+fullQualifiedOwnerWithProject+":"+methodSignature;
+				+URLCleaner.clean(fullQualifiedOwnerWithProject)+":"+URLCleaner.clean(methodSignature);
 		return uri;
 	}
 
 	public static String Namespace(String project, String nameSpace) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace, OntologyRegistry.code)
-				+ project+":"+nameSpace;
+				+ URLCleaner.clean(project)+":"+URLCleaner.clean(nameSpace);
 		return uri;
 	}
 
 	public static String Parameter(String owner, String paramString) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace, OntologyRegistry.code)
-				+ owner+":"+paramString;
+				+ URLCleaner.clean(owner)+":"+URLCleaner.clean(paramString);
 		return uri;
 	}
 
 	public static String PrimitiveType(String returnType) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace, OntologyRegistry.code)
-				+ returnType;
+				+ URLCleaner.clean(returnType);
 		return uri;
 	}
 

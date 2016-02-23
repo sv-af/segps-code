@@ -11,12 +11,12 @@ public class URLCleaner {
 	// to use as a part of another URL
 	public static String clean_simple_safe(String URL) {
 		// IRI REF = '<' ([^<>"{}|^`\]-[#x00-#x20])* '>'
-
+		URL=URL.trim();
 		String cln = URL.replace("^", "_").replace("<", "_").replace(">", "_").replace("\"", "_").replace("{", "_")
-				.replace("}", "_").replace("|", "_").replace("\'", "_").replace("\\", "_").replace(" ", "_")
-				.replace("$", ".");
+				.replace("}", "_").replace("|", "_").replace("\'", "_").replace("`", "_").replace("\\", "_")
+				.replace(" ", "_").replace("$", ".");
 
-		return (cln);
+		return (cln.trim());
 	}
 
 	public static String clean(String URL) {

@@ -16,6 +16,7 @@ import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.tbox.MainTBox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.tbox.RDF;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.system_specific.abox.MavenABox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.system_specific.tbox.MavenTBox;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.utils.URLCleaner;
 
 public class MavenPublisher {
 	/*
@@ -134,7 +135,7 @@ public class MavenPublisher {
 
 	private String createArtifactTriples(MavenArtifact mavenArtifact, NtriplesWriter triplesWriter) throws Exception {
 		// create types
-		String organizationURI = MainABox.Organization(mavenArtifact.getOrganization());
+		String organizationURI =  URLCleaner.clean(MainABox.Organization(mavenArtifact.getOrganization()));
 		String groupURI = MavenABox.Group(mavenArtifact.getGroupId());
 		String projectURI = BuildABox.BuildProject(mavenArtifact.getGroupId() + ":" + mavenArtifact.getArtifactId());
 		String versionURI = BuildABox.BuildRelease(mavenArtifact.toString());

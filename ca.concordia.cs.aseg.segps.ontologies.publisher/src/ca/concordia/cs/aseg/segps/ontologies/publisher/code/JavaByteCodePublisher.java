@@ -74,7 +74,7 @@ public class JavaByteCodePublisher {
 			String pkgURI = CodeABox.Namespace(project, packageName);
 			writer.addDeclarationTriple(pkgURI, RDF.type(), CodeTBox.Namespace(), false);
 			writer.addIndividualTriple(classFileURI, CodeTBox.containsCodeEntity(), pkgURI, false);
-			// TODO: add containsCodeEntity triples for classes and operations
+			
 			String classURI = null;
 			if (clazz.isInterface()) {
 				classURI = CodeABox.InterfaceType(project, clazz.getName());
@@ -83,6 +83,8 @@ public class JavaByteCodePublisher {
 				classURI = CodeABox.ClassType(project, clazz.getName());
 				writer.addDeclarationTriple(classURI, RDF.type(), CodeTBox.ClassType(), false);
 			}
+
+			writer.addIndividualTriple(classFileURI, CodeTBox.containsCodeEntity(), classURI, false);
 			writer.addDeclarationTriple(classURI, CodeTBox.hasCodeIdentifier(), clazz.getName(), true);
 			writer.addIndividualTriple(classURI, CodeTBox.isNamespaceMemberOf(), pkgURI, false);
 			String classVisibility = clazz.getVisibility();
@@ -119,6 +121,7 @@ public class JavaByteCodePublisher {
 					// System.out.println(operationURI+" invokes:");
 					writer.addDeclarationTriple(operationURI, RDF.type(), CodeTBox.Method(), false);
 					writer.addDeclarationTriple(classURI, CodeTBox.declaresMethod(), operationURI, false);
+					writer.addIndividualTriple(classFileURI, CodeTBox.containsCodeEntity(), operationURI, false);
 					/*
 					 * Create URI and triples for return type. How to
 					 * differentiate between primitive and complex return types
@@ -178,19 +181,19 @@ public class JavaByteCodePublisher {
 				if (accessURI != null)
 					writer.addDeclarationTriple(operationURI, CodeTBox.hasAccessModifier(), accessURI, false);
 				/* Create URIs and triples for method parameters */
-				// System.out.println("\t\t params: " +
-				// operation.getParameters());
-				int position = 1;
+				/*int position = 1;
 				for (UMLParameter parameter : operation.getParameters()) {
 					String paramString = parameter.toString().trim();
 					if (!paramString.equals("void")) {
-						String paramURI = CodeABox.Parameter("", paramString);
+						int hashPos = operationURI.indexOf("#")+1;
+						String paramOwner=operationURI.substring(hashPos);
+						String paramURI = CodeABox.Parameter(paramOwner, paramString);
 						writer.addDeclarationTriple(paramURI, RDF.type(), CodeTBox.Parameter(), false);
 						writer.addDeclarationTriple(operationURI, CodeTBox.hasParameter(), paramURI, false);
 						writer.addDeclarationTriple(paramURI, CodeTBox.hasPosition(), String.valueOf(position), true);
 						position++;
 					}
-				}
+				}*/
 				// System.out.println("\t\t name: " + operation.getName());
 			}
 			clazz=null;

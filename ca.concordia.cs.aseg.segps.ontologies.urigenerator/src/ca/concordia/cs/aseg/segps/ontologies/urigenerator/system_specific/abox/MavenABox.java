@@ -10,18 +10,19 @@ package ca.concordia.cs.aseg.segps.ontologies.urigenerator.system_specific.abox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.namespace.NamespaceFactory;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.registry.NamespaceRegistry;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.registry.OntologyRegistry;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.utils.URLCleaner;
 
 public class MavenABox {
 	
 	public static String Group(String group) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theAboxNameSpace, OntologyRegistry.maven)
 				+ group;
-		return uri;
+		return  URLCleaner.clean(uri);
 	}
 
 	public static String Contributor(String contributor) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theAboxNameSpace, OntologyRegistry.maven)
-				+ contributor;
+				+  URLCleaner.clean(contributor);
 		return uri;
 	}
 
