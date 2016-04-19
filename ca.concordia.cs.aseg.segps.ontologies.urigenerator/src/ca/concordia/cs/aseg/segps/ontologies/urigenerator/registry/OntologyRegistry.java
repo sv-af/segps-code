@@ -25,4 +25,10 @@ public class OntologyRegistry {
 	public static String securityDBs = "domain-specific/2015/02/securityDBs.owl#";
 	public static String securityDBs_nvd = "domain-specific/2015/02/securityDBs-nvd.owl#";
 	public static String securityDBs_osvdb ="domain-specific/2015/02/securityDBs-osvdb.owl#";
+	
+	// Context ontologies registry
+	public static String contonGeneral = "general/2015/01/conton.owl#";
+	public static String contonDomainSpanning = "domain-spanning/2015/01/conton.owl#";
+	public static String contonDomainSpecific = "domain-specific/2015/01/conton.owl#";
+	public static String mylyn = "system-specific/2015/01/mylyn.owl#";
 }
