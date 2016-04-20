@@ -13,5 +13,5 @@ public class NamespaceRegistry {
 	static public String theSEONTboxNameSpace="http://se-on.org/ontologies";
 	static public String theSEONAboxNameSpace=theSEONTboxNameSpace;
 	static public String theContonTboxNameSpace = "http://aseg.cs.concordia.ca/ontologies/conton";
-	static public String theContonAboxNameSpace = theContonTboxNameSpace;
+	static public String theContonAboxNameSpace = "http://aseg.cs.concordia.ca";
 }
