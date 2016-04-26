@@ -32,7 +32,6 @@ public class BugzillaABox extends IssuesABox {
 		return URLCleaner.clean(uri);
 	}
 	
-	@Override
 	public static String Priority(String priority) {
 		String uri = NamespaceFactory.createAboxNamespace(
 				NamespaceRegistry.theSEONAboxNameSpace,
@@ -41,7 +40,6 @@ public class BugzillaABox extends IssuesABox {
 		return URLCleaner.clean(uri);
 	}
 	
-	@Override
 	public static String Status(String status) {
 		String uri = NamespaceFactory.createAboxNamespace(
 				NamespaceRegistry.theSEONAboxNameSpace,
@@ -50,7 +48,6 @@ public class BugzillaABox extends IssuesABox {
 		return URLCleaner.clean(uri);
 	}
 	
-	@Override
 	public static String Severity(String severity) {
 		String uri = NamespaceFactory.createAboxNamespace(
 				NamespaceRegistry.theSEONAboxNameSpace,
