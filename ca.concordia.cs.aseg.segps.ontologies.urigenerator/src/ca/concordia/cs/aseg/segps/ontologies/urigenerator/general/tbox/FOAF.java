@@ -8,6 +8,10 @@ public class FOAF {
 		return uri;
 	}
 
+	public static String OnlineAccount() {
+		return "http://xmlns.com/foaf/spec/#term_OnlineAccount";
+	}
+	
 	////////////////////PROPERTIES//////////////////////////////////
 	public static String name()
 	{
@@ -20,4 +24,11 @@ public class FOAF {
 		String uri="http://xmlns.com/foaf/spec/#term_knows";
 		return uri;
 	}
+	
+	public static String account()
+	{
+		String uri="http://xmlns.com/foaf/spec/#term_account";
+		return uri;
+	}
+	
 }

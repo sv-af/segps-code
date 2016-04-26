@@ -39,6 +39,13 @@ public class BugzillaTBox extends IssuesTBox{
 		return uri;
 	}
 	
+	public static String reportedOn() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theSEONTboxNameSpace,
+				OntologyRegistry.issues_bugzilla)
+				+ "#reportedOn";
+		return uri;
+	}
 	// ///////////////////CONCEPTS//////////////////////////////////
 	public static String Component() {
 		String uri = NamespaceFactory.createTboxNamespace(
