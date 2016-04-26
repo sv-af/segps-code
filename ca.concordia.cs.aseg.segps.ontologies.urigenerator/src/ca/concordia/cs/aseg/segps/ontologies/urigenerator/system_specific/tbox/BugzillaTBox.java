@@ -11,7 +11,7 @@ public class BugzillaTBox extends IssuesTBox{
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theSEONTboxNameSpace,
 				OntologyRegistry.issues_bugzilla)
-				+ "/affectsComponent";
+				+ "#affectsComponent";
 		return uri;
 	}
 	
@@ -19,7 +19,7 @@ public class BugzillaTBox extends IssuesTBox{
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theSEONTboxNameSpace,
 				OntologyRegistry.issues_bugzilla)
-				+ "/hasCC";
+				+ "#hasCC";
 		return uri;
 	}
 	
@@ -27,7 +27,7 @@ public class BugzillaTBox extends IssuesTBox{
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theSEONTboxNameSpace,
 				OntologyRegistry.issues_bugzilla)
-				+ "/hasQAContact";
+				+ "#hasQAContact";
 		return uri;
 	}
 	
@@ -35,7 +35,7 @@ public class BugzillaTBox extends IssuesTBox{
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theSEONTboxNameSpace,
 				OntologyRegistry.issues_bugzilla)
-				+ "/isTargetedFor";
+				+ "#isTargetedFor";
 		return uri;
 	}
 	
@@ -44,7 +44,7 @@ public class BugzillaTBox extends IssuesTBox{
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theSEONTboxNameSpace,
 				OntologyRegistry.issues_bugzilla)
-				+ "/Component";
+				+ "#Component";
 		return uri;
 	}
 	
@@ -52,7 +52,7 @@ public class BugzillaTBox extends IssuesTBox{
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theSEONTboxNameSpace,
 				OntologyRegistry.issues_bugzilla)
-				+ "/OperatingSystem";
+				+ "#OperatingSystem";
 		return uri;
 	}
 	
@@ -60,9 +60,7 @@ public class BugzillaTBox extends IssuesTBox{
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theSEONTboxNameSpace,
 				OntologyRegistry.issues_bugzilla)
-				+ "/Platform";
+				+ "#Platform";
 		return uri;
 	}
-	
-	// ///////////////////INDIVIDUALS//////////////////////////////////
 }
