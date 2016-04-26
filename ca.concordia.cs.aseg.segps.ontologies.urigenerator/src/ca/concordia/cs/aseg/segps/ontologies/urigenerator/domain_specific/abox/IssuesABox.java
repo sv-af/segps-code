@@ -11,7 +11,7 @@ public class IssuesABox {
 		String uri = NamespaceFactory
 				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
 						OntologyRegistry.issues)
-				+ project + "/" + issueId;
+				+ "Issue/" + project + "/" + issueId;
 		return URLCleaner.clean(uri);
 	}
 
@@ -19,7 +19,7 @@ public class IssuesABox {
 		String uri = NamespaceFactory
 				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
 						OntologyRegistry.issues)
-				+ project + "/" + assigneeId;
+				+ "Assignee/" + project + "/" + assigneeId;
 		return URLCleaner.clean(uri);
 	}
 
@@ -27,15 +27,7 @@ public class IssuesABox {
 		String uri = NamespaceFactory
 				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
 						OntologyRegistry.issues)
-				+ project + "/" + attachmentId;
-		return URLCleaner.clean(uri);
-	}
-
-	public static String Bug(String project, String bugId) {
-		String uri = NamespaceFactory
-				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
-						OntologyRegistry.issues)
-				+ project + "/" + bugId;
+				+ "Attachment/" + project + "/" + attachmentId;
 		return URLCleaner.clean(uri);
 	}
 
@@ -43,39 +35,43 @@ public class IssuesABox {
 		String uri = NamespaceFactory
 				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
 						OntologyRegistry.issues)
-				+ project + "/" + issueId + "/" + comment;
+				+ "Comment/" + project + "/" + issueId + "/" + comment;
 		return URLCleaner.clean(uri);
 	}
 
+	// TODO
 	public static String Enhancement(String project, String enhancement) {
 		String uri = NamespaceFactory
 				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
 						OntologyRegistry.issues)
-				+ project + "/" + enhancement;
+				+ "Enhancement/" + project + "/" + enhancement;
 		return URLCleaner.clean(uri);
 	}
 
+	// TODO
 	public static String FeatureAddition(String project, String featureAddition) {
 		String uri = NamespaceFactory
 				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
 						OntologyRegistry.issues)
-				+ project + "/" + featureAddition;
+				+ "FeatureAddition/" + project + "/" + featureAddition;
 		return URLCleaner.clean(uri);
 	}
 
+	// TODO
 	public static String FeatureRequest(String project, String featureRequest) {
 		String uri = NamespaceFactory
 				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
 						OntologyRegistry.issues)
-				+ project + "/" + featureRequest;
+				+ "FeatureRequest/" + project + "/" + featureRequest;
 		return URLCleaner.clean(uri);
 	}
 
+	// TODO
 	public static String Improvement(String project, String improvement) {
 		String uri = NamespaceFactory
 				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
 						OntologyRegistry.issues)
-				+ project + "/" + improvement;
+				+ "Improvement/" + project + "/" + improvement;
 		return URLCleaner.clean(uri);
 	}
 
@@ -83,7 +79,7 @@ public class IssuesABox {
 		String uri = NamespaceFactory
 				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
 						OntologyRegistry.issues)
-				+ priority;
+				+ "Priority/" + priority;
 		return URLCleaner.clean(uri);
 	}
 
@@ -91,7 +87,7 @@ public class IssuesABox {
 		String uri = NamespaceFactory
 				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
 						OntologyRegistry.issues)
-				+ project + "/" + reporter;
+				+ "Reporter/" + project + "/" + reporter;
 		return URLCleaner.clean(uri);
 	}
 
@@ -99,15 +95,15 @@ public class IssuesABox {
 		String uri = NamespaceFactory
 				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
 						OntologyRegistry.issues)
-				+ resolution;
+				+ "Resolution/" + resolution;
 		return URLCleaner.clean(uri);
 	}
 
-	public static String Severity(String project, String severity) {
+	public static String Severity(String severity) {
 		String uri = NamespaceFactory
 				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
 						OntologyRegistry.issues)
-				+ project + "/" + severity;
+				+ "Severity/" + severity;
 		return URLCleaner.clean(uri);
 	}
 
@@ -115,7 +111,7 @@ public class IssuesABox {
 		String uri = NamespaceFactory
 				.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
 						OntologyRegistry.issues)
-				+ project + "/" + status;
+				+ "Status/" + status;
 		return URLCleaner.clean(uri);
 	}
 }
