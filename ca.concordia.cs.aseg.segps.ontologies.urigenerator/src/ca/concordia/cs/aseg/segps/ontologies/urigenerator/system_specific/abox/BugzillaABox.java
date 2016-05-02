@@ -12,7 +12,7 @@ public class BugzillaABox extends IssuesABox {
 		String uri = NamespaceFactory.createAboxNamespace(
 				NamespaceRegistry.theSEONAboxNameSpace,
 				OntologyRegistry.issues_bugzilla)
-				+ "/Component" + "/" + projectName + "/" + component;
+				+ "Component" + "/" + projectName + "/" + component;
 		return URLCleaner.clean(uri);
 	}
 	
@@ -20,7 +20,7 @@ public class BugzillaABox extends IssuesABox {
 		String uri = NamespaceFactory.createAboxNamespace(
 				NamespaceRegistry.theSEONAboxNameSpace,
 				OntologyRegistry.issues_bugzilla)
-				+ "/OperatingSystem" + "/" + operatingSystem;
+				+ "OperatingSystem" + "/" + operatingSystem;
 		return URLCleaner.clean(uri);
 	}
 	
@@ -28,7 +28,7 @@ public class BugzillaABox extends IssuesABox {
 		String uri = NamespaceFactory.createAboxNamespace(
 				NamespaceRegistry.theSEONAboxNameSpace,
 				OntologyRegistry.issues_bugzilla)
-				+ "/Platform" + "/" + platform;
+				+ "Platform" + "/" + platform;
 		return URLCleaner.clean(uri);
 	}
 	
@@ -36,7 +36,7 @@ public class BugzillaABox extends IssuesABox {
 		String uri = NamespaceFactory.createAboxNamespace(
 				NamespaceRegistry.theSEONAboxNameSpace,
 				OntologyRegistry.issues_bugzilla)
-				+ "/Priority" + "/" + priority;
+				+ "Priority" + "/" + priority;
 		return URLCleaner.clean(uri);
 	}
 	
@@ -44,7 +44,7 @@ public class BugzillaABox extends IssuesABox {
 		String uri = NamespaceFactory.createAboxNamespace(
 				NamespaceRegistry.theSEONAboxNameSpace,
 				OntologyRegistry.issues_bugzilla)
-				+ "/Status" + "/" + status;
+				+ "Status" + "/" + status;
 		return URLCleaner.clean(uri);
 	}
 	
@@ -52,7 +52,7 @@ public class BugzillaABox extends IssuesABox {
 		String uri = NamespaceFactory.createAboxNamespace(
 				NamespaceRegistry.theSEONAboxNameSpace,
 				OntologyRegistry.issues_bugzilla)
-				+ "/Severity" + "/" + severity;
+				+ "Severity" + "/" + severity;
 		return URLCleaner.clean(uri);
 	}
 	
