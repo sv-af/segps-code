@@ -23,6 +23,6 @@ public class OntologyRegistry {
 	
 	// Vulnerability ontologies registry 
 	public static String securityDBs = "domain-specific/2015/02/securityDBs.owl#";
-	public static String securityDBs_nvd = "domain-specific/2015/02/securityDBs-nvd.owl#";
-	public static String securityDBs_osvdb ="domain-specific/2015/02/securityDBs-osvdb.owl#";
+	public static String securityDBs_nvd = "system-specific/2015/02/securityDBs-nvd.owl#";
+	public static String securityDBs_osvdb ="system-specific/2015/02/securityDBs-osvdb.owl#";
 }
