@@ -34,6 +34,10 @@ public class InstancesLinker {
 			writer.addDeclarationTriple(cve, RDF.type(), SecurityDBsTBox.Vulnerability(), false);
 			writer.addIndividualTriple(cve, SecurityDBsTBox.hasVulnerabilityId(), currentEntry.getcveID(), true);
 			
+			/**Add publication(disclosure) date and modification date**/
+			writer.addIndividualTriple(cve, SecurityDBsTBox.hasPublishedDate(), currentEntry.getPublishedDatetime(), true);
+			writer.addIndividualTriple(cve, SecurityDBsTBox.hasModifiedDate(), currentEntry.getLastModifiedDatetime(), true);
+			
 			//Check if the vulnerability has weakness type. 
 			if(currentEntry.getcweID() != null){
 				// ABox instances
@@ -177,7 +181,7 @@ public class InstancesLinker {
 	public void distributer(Entry currentEntry){
 		
 		this.currentEntry = currentEntry;
-		writer = new NtriplesWriter("sevont.nt",100000, 500000);
+		writer = new NtriplesWriter("C:/Users/umroot/workspace/data/triples/sevont.nt",100000, 500000);
 
 //		System.out.println("Mapping "+ this.currentEntry.getcveID()+" facts into SEVONT layers");
 		
