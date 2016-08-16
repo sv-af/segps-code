@@ -47,6 +47,11 @@ public class SecurityDBsABox {
 				+ AffectedRelease;
 		return uri;
 	}
+	public static String OtherReleases(String OtherReleases){
+		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theAboxNameSpace, OntologyRegistry.securityDBs)
+				+ OtherReleases;
+		return uri;
+	}
 	public static String Application(String Application) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theAboxNameSpace, OntologyRegistry.securityDBs)
 				+ Application;

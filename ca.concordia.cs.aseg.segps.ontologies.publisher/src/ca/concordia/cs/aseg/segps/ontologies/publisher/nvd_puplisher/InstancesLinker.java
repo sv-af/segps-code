@@ -2,6 +2,8 @@ package ca.concordia.cs.aseg.segps.ontologies.publisher.nvd_puplisher;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ca.concordia.cs.aseg.segps.ontologies.publisher.ntriples.NtriplesWriter;
 import ca.concordia.cs.aseg.segps.ontologies.publisher.security_raw_data_parser.Entry;
@@ -17,7 +19,12 @@ public class InstancesLinker {
 	private Entry currentEntry = new Entry();
 	private NtriplesWriter writer;
 	
+	// file location and previous versions patterns, regualr expertions 
+	private String file_location_regex = "(([a-zA-Z]*||[a-zA-Z]*:)(?:/[\\w\\s]+)*/[\\w\\s]+\\.\\w+)";
+	private String previous_version_regex1 = "((?:before)?(?:Before)?\\s(?:[\\d.])+[\\w-]+)\\b";
+	private String previous_version_regex2 = "((?:and earlier))";
 	
+		
 	private void generalLayer(Entry currentEntry){
 	}
 	
@@ -64,9 +71,9 @@ public class InstancesLinker {
 			
 			// Mapping the vulnerable products facts into the ontology concepts and properties. 
 			ArrayList<String> affectedProducts = currentEntry.getAffectedProductList();
+			boolean onePass = true;
 			for(int i=0; i<affectedProducts.size(); i++){
 				// ABox instances
-				
 				String temp = affectedProducts.get(i).replaceAll("\\s+","");// removes all whitespace and non visible characters such as tab, \n . 
 				String[] split = temp.split(":"); // e.g.  cpe:/a:vendor_name:product_name:version.	
 				String affectedRelease = SecurityDBsABox.AffectedRelease(split[2] + ":" + split[3] + ":" + split[4]); // e.g. vendor_name:product_name:version
@@ -94,13 +101,53 @@ public class InstancesLinker {
 				/**2**/writer.addIndividualTriple(procutName, SecurityDBsTBox.hasVulnerability(), cve, false);
 				writer.addIndividualTriple(affectedRelease, SecurityDBsTBox.hasAffectedReleaseVersion(), versionID, true);
 				writer.addIndividualTriple(affectedRelease, SecurityDBsTBox.hasAffectedReleaseName(), split[3], true);
+				
+				/**
+				 * This if-condition executed only one time for each CVE. It modeled the previous versions of this
+				 * affected release if it is mentioned in CVE summary text.
+				 */
+				if(currentEntry.getSummary() != null && onePass){
+					Matcher pvMatcher1 = Pattern.compile(previous_version_regex1).matcher(currentEntry.getSummary());
+					Matcher pvMatcher2 = Pattern.compile(previous_version_regex2).matcher(currentEntry.getSummary());
+					// first pattern: previous version such as before 1.2.x 
+					while (pvMatcher1.find()) {
+						String pv = pvMatcher1.group(1).replaceAll("\\s+","_");
+						// ABox instances
+						String otherReleases = SecurityDBsABox.OtherReleases(split[2] + ":" + split[3] + ":" + pv);
+						// TBox instances
+						writer.addDeclarationTriple(otherReleases, RDF.type(), SecurityDBsTBox.OtherReleases(), false);
+						writer.addIndividualTriple(cve, SecurityDBsTBox.affectOtherReleases(), otherReleases, false);
+					}
+					// second pattern: previous version such as  1.2.x and earlier
+					while (pvMatcher2.find()) {
+						String pv = pvMatcher2.group(1).replaceAll("\\s+","_");
+						// ABox instances
+						String otherReleases = SecurityDBsABox.OtherReleases(split[2] + ":" + split[3] + ":" + split[4]+"_"+pv);
+						// TBox instances
+						writer.addDeclarationTriple(otherReleases, RDF.type(), SecurityDBsTBox.OtherReleases(), false);
+						writer.addIndividualTriple(cve, SecurityDBsTBox.affectOtherReleases(), otherReleases, false);
+					}
+					onePass = false;
+				}
+				
 			}
 			
 			if(currentEntry.getSummary() != null){
 				String summaryURI = SecurityDBsABox.Summary(currentEntry.getcveID());
 				writer.addIndividualTriple(summaryURI, RDF.type(), SecurityDBsTBox.Summary(), false);
-	//			writer.addIndividualTriple(cve, SecurityDBsTBox.hasSummary(), summaryURI, false); // this might be changed to data-property !!
-				writer.addIndividualTriple(summaryURI, MainTBox.hasDescription(), currentEntry.getSummary(), true);
+				writer.addIndividualTriple(cve, SecurityDBsTBox.hasSummary(), summaryURI, false); 
+				writer.addIndividualTriple(summaryURI, MainTBox.hasDescription(), currentEntry.getSummary(), true); // we can use the sub-data property 'vulnerabilityDescrption'
+				
+				// Extracting the affected artifacts (file/folder locations) from cve summary (if any).
+				Matcher flMatcher = Pattern.compile(file_location_regex).matcher(currentEntry.getSummary());
+				while (flMatcher.find()) {
+					String fl = flMatcher.group(1).replaceAll("/", "_");
+					// ABox instance
+					String flURI = MainABox.File(fl);
+					// TBox instance
+					writer.addDeclarationTriple(flURI, RDF.type(), MainTBox.File(), false);
+					writer.addIndividualTriple(cve, SecurityDBsTBox.isLocatedIn(), flURI, false);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

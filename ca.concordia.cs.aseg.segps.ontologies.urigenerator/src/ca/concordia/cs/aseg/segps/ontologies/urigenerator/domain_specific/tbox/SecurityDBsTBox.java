@@ -102,6 +102,14 @@ public class SecurityDBsTBox {
 		return uri;
 	}
 	
+	public static String OtherReleases() {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "OtherReleases";
+		return uri;
+	}
+	
 	public static String AffectedProduct() {
 		String uri = NamespaceFactory.createTboxNamespace(
 				NamespaceRegistry.theTboxNameSpace,
@@ -244,6 +252,14 @@ public class SecurityDBsTBox {
 				NamespaceRegistry.theTboxNameSpace,
 				OntologyRegistry.securityDBs)
 				+ "affectRelease";
+		return uri;
+	}
+	
+	public static String affectOtherReleases () {
+		String uri = NamespaceFactory.createTboxNamespace(
+				NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs)
+				+ "affectOtherReleases";
 		return uri;
 	}
 	
@@ -492,6 +508,13 @@ public class SecurityDBsTBox {
 				NamespaceRegistry.theTboxNameSpace,
 				OntologyRegistry.securityDBs)
 				+ "hasReportConfidence";
+		return uri;
+	}
+	
+	public static String vulnerabilityDescrption(){
+		String uri = NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace,
+				OntologyRegistry.securityDBs) 
+				+ "vulnerabilityDescrption";
 		return uri;
 	}
 }
