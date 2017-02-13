@@ -25,11 +25,11 @@ public class BuildABox {
 		return uri;
 	}
 
-	public static String DependencyExclusion(String exclusion) {
+	/*public static String DependencyExclusion(String exclusion) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theAboxNameSpace, OntologyRegistry.build)
 				+  URLCleaner.clean(exclusion);
 		return uri;
-	}
+	}*/
 
 	public static String DependencyLink(String dependencylink) {
 		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theAboxNameSpace, OntologyRegistry.build)

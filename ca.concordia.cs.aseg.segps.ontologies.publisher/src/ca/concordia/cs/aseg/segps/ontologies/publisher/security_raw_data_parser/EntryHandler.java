@@ -5,9 +5,6 @@
  * Please see the LICENSE file for details.
  */package ca.concordia.cs.aseg.segps.ontologies.publisher.security_raw_data_parser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;

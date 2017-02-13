@@ -25,10 +25,10 @@ public class BuildTBox {
 		return uri;
 	}
 	
-	public static String DependencyExclusion(){
+	/*public static String DependencyExclusion(){
 		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "DependencyExclusion";
 		return uri;
-	}
+	}*/
 	
 	public static String DependencyLink(){
 		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "DependencyLink";
@@ -52,20 +52,20 @@ public class BuildTBox {
 		return uri;
 	}
 	
-	public static String hasDependantLink(){
-		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasDependantLink";
+	public static String hasDependencySource(){
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasDependencySource";
 		return uri;
 	}
 	
-	public static String hasDependencyLink(){
-		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasDependencyLink";
+	public static String hasDependencyTarget(){
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasDependencyTarget";
 		return uri;
 	}
 	
-	public static String hasExclusion(){
+	/*public static String hasExclusion(){
 		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasExclusion";
 		return uri;
-	}
+	}*/
 
 	public static String excludesProduct() {
 		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "excludesProduct";

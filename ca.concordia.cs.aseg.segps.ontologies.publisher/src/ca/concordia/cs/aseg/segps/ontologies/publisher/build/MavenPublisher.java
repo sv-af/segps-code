@@ -1,13 +1,16 @@
 package ca.concordia.cs.aseg.segps.ontologies.publisher.build;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import ca.concordia.cs.aseg.maven.parser.MavenArtifact;
-import ca.concordia.cs.aseg.maven.parser.MavenDependency;
+import ca.concordia.cs.aseg.maven.parser.models.MavenArtifact;
+import ca.concordia.cs.aseg.maven.parser.models.MavenDependency;
+import ca.concordia.cs.aseg.maven.parser.models.MavenLicense;
 import ca.concordia.cs.aseg.maven.util.Serializer;
+import ca.concordia.cs.aseg.maven.util.Utils;
 import ca.concordia.cs.aseg.segps.ontologies.publisher.ntriples.NtriplesWriter;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox.BuildABox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.tbox.BuildTBox;
@@ -19,6 +22,9 @@ import ca.concordia.cs.aseg.segps.ontologies.urigenerator.system_specific.tbox.M
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.utils.URLCleaner;
 
 public class MavenPublisher {
+
+	private int declarationSize = 100000, individualSize = 500000;
+
 	/*
 	 * Publish triples from directory of POMs
 	 */
@@ -27,8 +33,8 @@ public class MavenPublisher {
 	}
 
 	/*
-	 * Publish triples from directory of either POMs or serialized MavenArtifact
-	 * objects
+	 * Publish triples from directory of either indexFile, POM directory or
+	 * serialized MavenArtifact objects
 	 */
 	public void publish(String outputFileLocation, String file, int mode) {
 		switch (mode) {
@@ -38,11 +44,18 @@ public class MavenPublisher {
 		case 1:
 			publishFromArtifactObject(outputFileLocation, file);
 			break;
+		case 2:
+			try {
+				publishFromIndexFile(outputFileLocation, file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			break;
 		}
 	}
 
 	public void publishFromPom(String outputFileLocation, String inputFilesLocation) {
-		NtriplesWriter triplesWriter = new NtriplesWriter(outputFileLocation, 100000, 500000);
+		NtriplesWriter triplesWriter = new NtriplesWriter(outputFileLocation, declarationSize, individualSize);
 		String[] extensions = { "pom" };
 		MavenArtifact mavenArtifact;
 		File baseDirectory = new File(inputFilesLocation);
@@ -71,7 +84,7 @@ public class MavenPublisher {
 
 						for (int i = 0; i < pomFiles.size(); i++) {
 							file = pomFiles.get(i);
-							mavenArtifact = MavenArtifact.getArtifactFromPOM(file);
+							mavenArtifact = MavenArtifact.getArtifactFromPOM(file, null);
 							if (mavenArtifact != null) {
 								createTriples(mavenArtifact, triplesWriter);
 							}
@@ -80,7 +93,7 @@ public class MavenPublisher {
 						dirs[d] = null;
 					} else {
 						if (dirs[d].getName().endsWith(".pom")) {
-							mavenArtifact = MavenArtifact.getArtifactFromPOM(dirs[d]);
+							mavenArtifact = MavenArtifact.getArtifactFromPOM(dirs[d], null);
 							if (mavenArtifact != null) {
 								createTriples(mavenArtifact, triplesWriter);
 							}
@@ -90,7 +103,7 @@ public class MavenPublisher {
 
 			} else {
 				if (baseDirectory.getName().endsWith(".pom")) {
-					mavenArtifact = MavenArtifact.getArtifactFromPOM(baseDirectory);
+					mavenArtifact = MavenArtifact.getArtifactFromPOM(baseDirectory, null);
 					if (mavenArtifact != null) {
 						createTriples(mavenArtifact, triplesWriter);
 					}
@@ -103,7 +116,7 @@ public class MavenPublisher {
 	}
 
 	public void publishFromArtifactObject(String outputFileLocation, String inputFilesLocation) {
-		NtriplesWriter triplesWriter = new NtriplesWriter(outputFileLocation, 100000, 500000);
+		NtriplesWriter triplesWriter = new NtriplesWriter(outputFileLocation, declarationSize, individualSize);
 		try {
 			File baseDirectory = new File(inputFilesLocation);
 			if (baseDirectory.isDirectory()) {
@@ -111,7 +124,7 @@ public class MavenPublisher {
 				System.out.println("\t Num of files: " + parsedArtifacts.length);
 				File file = null;
 				MavenArtifact mavenArtifact = null;
-				
+
 				for (int i = 0; i < parsedArtifacts.length; i++) {
 					file = new File(baseDirectory.getAbsolutePath() + "\\" + parsedArtifacts[i]);
 					mavenArtifact = (MavenArtifact) Serializer.unserializeFile(file);
@@ -133,14 +146,34 @@ public class MavenPublisher {
 		}
 	}
 
+	public void publishFromIndexFile(String outputFileLocation, String indexFileLocation) throws IOException {
+		NtriplesWriter triplesWriter = new NtriplesWriter(outputFileLocation, declarationSize, individualSize);
+		File index = new File(indexFileLocation);
+		List<String> indexitems = FileUtils.readLines(index);
+		int count = 0;
+		for (String item : indexitems) {
+			MavenArtifact mavenArtifact = MavenArtifact.getArtifactFromGAV(item);
+			if (mavenArtifact != null) {
+				try {
+					createTriples(mavenArtifact, triplesWriter);
+					count++;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			item = null;
+			if (count == 100)
+				break;
+		}
+		triplesWriter.flushAndClose();
+	}
+
 	private String createArtifactTriples(MavenArtifact mavenArtifact, NtriplesWriter triplesWriter) throws Exception {
 		// create types
-		String organizationURI =  URLCleaner.clean(MainABox.Organization(mavenArtifact.getOrganization()));
 		String groupURI = MavenABox.Group(mavenArtifact.getGroupId());
 		String projectURI = BuildABox.BuildProject(mavenArtifact.getGroupId() + ":" + mavenArtifact.getArtifactId());
 		String versionURI = BuildABox.BuildRelease(mavenArtifact.toString());
 
-		triplesWriter.addDeclarationTriple(organizationURI, RDF.type(), MainTBox.Organization(), false);
 		triplesWriter.addDeclarationTriple(groupURI, RDF.type(), MavenTBox.Group(), false);
 		triplesWriter.addDeclarationTriple(projectURI, RDF.type(), BuildTBox.BuildProject(), false);
 		triplesWriter.addDeclarationTriple(versionURI, RDF.type(), BuildTBox.BuildRelease(), false);
@@ -148,14 +181,26 @@ public class MavenPublisher {
 		// create relationship between types
 		triplesWriter.addIndividualTriple(projectURI, MavenTBox.hasGroup(), groupURI, false);
 		triplesWriter.addIndividualTriple(projectURI, MainTBox.hasRelease(), versionURI, false);
-		triplesWriter.addIndividualTriple(projectURI, MainTBox.belongsToOrgaization(), organizationURI, false);
-
+		if (mavenArtifact.getOrganizationName() != null) {
+			String organizationURI = MainABox.Organization(mavenArtifact.getOrganizationName());
+			triplesWriter.addDeclarationTriple(organizationURI, RDF.type(), MainTBox.Organization(), false);
+			triplesWriter.addIndividualTriple(projectURI, MainTBox.belongsToOrganization(), organizationURI, false);
+			triplesWriter.addIndividualTriple(organizationURI, MainTBox.hasName(), mavenArtifact.getOrganizationName(),
+					true);
+			if (mavenArtifact.getOrganizationURL() != null) {
+				triplesWriter.addIndividualTriple(organizationURI, MainTBox.hasURL(),
+						mavenArtifact.getOrganizationURL(), true);
+			}
+		}
 		// create data properties
 		triplesWriter.addIndividualTriple(projectURI, MavenTBox.hasArtifactID(), mavenArtifact.getArtifactId(), true);
 		triplesWriter.addIndividualTriple(groupURI, MavenTBox.hasGroupID(), mavenArtifact.getGroupId(), true);
 		triplesWriter.addIndividualTriple(versionURI, BuildTBox.hasVersionNumber(), mavenArtifact.getVersion(), true);
 		triplesWriter.addIndividualTriple(versionURI, MainTBox.hasName(), mavenArtifact.getName(), true);
 		triplesWriter.addIndividualTriple(versionURI, MainTBox.hasDescription(), mavenArtifact.getDescription(), true);
+		triplesWriter.addIndividualTriple(versionURI, MainTBox.hasReleaseDate(),
+				mavenArtifact.getReleasedDate().toString(), true);
+
 		return versionURI;
 
 	}
@@ -163,32 +208,52 @@ public class MavenPublisher {
 	private void createTriples(MavenArtifact mavenArtifact, NtriplesWriter triplesWriter) throws Exception {
 		System.out.println("creating triples for:" + mavenArtifact.toString());
 		String mainArtifact = createArtifactTriples(mavenArtifact, triplesWriter);
+
 		if (mavenArtifact.getParent() != null) {
-			String parent = createArtifactTriples(mavenArtifact.getParent(), triplesWriter);
+			String parent = BuildABox.BuildRelease(mavenArtifact.getParent().toString());
 			triplesWriter.addIndividualTriple(mainArtifact, MainTBox.hasParent(), parent, false);
 		}
+
 		for (MavenDependency dependency : mavenArtifact.getDependencies()) {
 			String depLinkUri = BuildABox.DependencyLink(mavenArtifact.toString() + "_" + dependency.toString());
-			String dependencyUri=BuildABox.BuildRelease(dependency.toString());
+			String dependencyUri = BuildABox.BuildRelease(dependency.toString());
 
 			triplesWriter.addDeclarationTriple(depLinkUri, RDF.type(), BuildTBox.DependencyLink(), false);
 
 			// create relationship between types
-			triplesWriter.addIndividualTriple(depLinkUri, BuildTBox.hasDependantLink(), mainArtifact, false);
-			triplesWriter.addIndividualTriple(depLinkUri, BuildTBox.hasDependencyLink(), dependencyUri, false);
-			
+			triplesWriter.addIndividualTriple(depLinkUri, BuildTBox.hasDependencySource(), mainArtifact, false);
+			triplesWriter.addIndividualTriple(depLinkUri, BuildTBox.hasDependencyTarget(), dependencyUri, false);
+
 			// create data properties
 			if (dependency.getScope() != null) {
-				triplesWriter.addIndividualTriple(depLinkUri, MavenTBox.hasDependencyScope(), dependency.getScope(), true);
+				triplesWriter.addIndividualTriple(depLinkUri, MavenTBox.hasDependencyScope(), dependency.getScope(),
+						true);
 			}
-			triplesWriter.addIndividualTriple(depLinkUri, MavenTBox.hasDependencyType(), dependency.getType(), true);
-			triplesWriter.addIndividualTriple(depLinkUri, MavenTBox.isOptionalDependency(), String.valueOf(dependency.isOptional()), true);
-			
+			if (dependency.getType() != null) {
+				triplesWriter.addIndividualTriple(depLinkUri, MavenTBox.hasDependencyType(), dependency.getType(),
+						true);
+			}
+			triplesWriter.addIndividualTriple(depLinkUri, MavenTBox.isOptionalDependency(),
+					String.valueOf(dependency.isOptional()), true);
 			for (String exclusion : dependency.getExclusions()) {
-				String exclusionURI=BuildABox.BuildProject(exclusion).toString();
+				String exclusionURI = BuildABox.BuildProject(exclusion).toString();
 				triplesWriter.addIndividualTriple(depLinkUri, BuildTBox.excludesProduct(), exclusionURI, false);
 			}
+
 		}
+		for (MavenLicense license : mavenArtifact.getLicenses()) {
+			// create data properties
+			triplesWriter.addIndividualTriple(mainArtifact, MavenTBox.hasLicenseName(), license.getName(), true);
+			triplesWriter.addIndividualTriple(mainArtifact, MavenTBox.hasLicenseUrl(), license.getUrl(), true);
+		}
+
 		mavenArtifact = null;
+	}
+
+	public static void main(String[] args) {
+		String index = Utils.MAVEN_INDEX_LOCATION + "uniqueArtifacts";
+		// String output = Utils.TRIPLES_LOCATION + "maven-dates.nt";
+		String output = "out.nt";
+		new MavenPublisher().publish(output, index, 2);
 	}
 }

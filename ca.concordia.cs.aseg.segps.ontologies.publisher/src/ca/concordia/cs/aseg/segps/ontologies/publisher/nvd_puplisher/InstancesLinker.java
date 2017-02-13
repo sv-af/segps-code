@@ -92,10 +92,10 @@ public class InstancesLinker {
 				// Classify Affected products into OS or APP
 				if (split[1].equals("/o")) {
 					writer.addDeclarationTriple(procutName, RDF.type(), SecurityDBsTBox.OperatingSystem(), false);
-					writer.addIndividualTriple(procutName, MainTBox.belongsToOrgaization(), organizationName, false); 
+					writer.addIndividualTriple(procutName, MainTBox.belongsToOrganization(), organizationName, false); 
 				}else if(split[1].equals("/a")){
 					writer.addDeclarationTriple(procutName, RDF.type(), SecurityDBsTBox.Application(), false);
-					writer.addIndividualTriple(procutName, MainTBox.belongsToOrgaization(), organizationName, false); 
+					writer.addIndividualTriple(procutName, MainTBox.belongsToOrganization(), organizationName, false); 
 				}
 				
 				writer.addDeclarationTriple(affectedRelease, RDF.type(), SecurityDBsTBox.AffectedRelease(), false);
