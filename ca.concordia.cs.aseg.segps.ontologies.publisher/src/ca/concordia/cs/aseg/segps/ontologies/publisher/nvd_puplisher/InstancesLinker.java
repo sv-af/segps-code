@@ -74,12 +74,19 @@ public class InstancesLinker {
 			boolean onePass = true;
 			for(int i=0; i<affectedProducts.size(); i++){
 				// ABox instances
+				String affectedRelease = "";
+				String versionID = "";
 				String temp = affectedProducts.get(i).replaceAll("\\s+","");// removes all whitespace and non visible characters such as tab, \n . 
-				String[] split = temp.split(":"); // e.g.  cpe:/a:vendor_name:product_name:version.	
-				String affectedRelease = SecurityDBsABox.AffectedRelease(split[2] + ":" + split[3] + ":" + split[4]); // e.g. vendor_name:product_name:version
+				String[] split = temp.split(":"); // e.g.  cpe:/a:vendor_name:product_name:version:quantifier.	
+				if(split.length > 5){
+					affectedRelease = SecurityDBsABox.AffectedRelease(split[2] + ":" + split[3] + ":" + split[4]+"-"+split[5]); // e.g. vendor_name:product_name:version-quantifier
+					versionID = split[4]+"-"+split[5];
+				}else{
+					affectedRelease = SecurityDBsABox.AffectedRelease(split[2] + ":" + split[3] + ":" + split[4]); // e.g. vendor_name:product_name:version
+					versionID = split[4];
+				}
 				String organizationName = MainABox.Organization(split[2]);
 				String procutName = MainABox.Product(split[2]+":"+split[3]);
-				String versionID = split[4];
 			
 				// TBox instances
 				// Classify Affected products into OS or APP
@@ -95,6 +102,10 @@ public class InstancesLinker {
 				writer.addDeclarationTriple(organizationName, RDF.type(), MainTBox.Organization(), false);
 				writer.addIndividualTriple(cve, SecurityDBsTBox.affectRelease(), affectedRelease, false);
 				writer.addIndividualTriple(cve, SecurityDBsTBox.affectProduct(), procutName, false);
+				
+				writer.addIndividualTriple(procutName, MainTBox.hasRelease(), affectedRelease, false);
+
+				
 				// We might delete 1 and 2 if the reasoner will be able to infer the inverse relations
 				// hasVulnerability inverse of affectProduct
 				/**1**/writer.addIndividualTriple(affectedRelease, SecurityDBsTBox.hasVulnerability(), cve, false);
