@@ -73,6 +73,12 @@ public class MainTBox {
 				+ "stakeholder";
 		return uri;
 	}
+	
+	public static String License() {
+		String uri = NamespaceFactory.createTboxNamespace(NamespaceRegistry.theSEONTboxNameSpace, OntologyRegistry.main)
+				+ "license";
+		return uri;
+	}
 
 	public static String SeonThing() {
 		String uri = NamespaceFactory.createTboxNamespace(NamespaceRegistry.theSEONTboxNameSpace, OntologyRegistry.main)
@@ -86,9 +92,9 @@ public class MainTBox {
 	 *     
 	 *     
 	 */
-	public static String belongsToOrgaization() {
+	public static String belongsToOrganization() {
 		String uri = NamespaceFactory.createTboxNamespace(NamespaceRegistry.theSEONTboxNameSpace, OntologyRegistry.main)
-				+ "belongsToOrgaization";
+				+ "belongsToOrganization";
 		return uri;
 	}
 
@@ -176,6 +182,12 @@ public class MainTBox {
 		return uri;
 	}
 
+	public static String hasLicense() {
+		String uri = NamespaceFactory.createTboxNamespace(NamespaceRegistry.theSEONTboxNameSpace, OntologyRegistry.main)
+				+ "hasLicense";
+		return uri;
+	}
+	
 	/*
 	 * DATA PRPERTIES
 	 */
@@ -224,6 +236,12 @@ public class MainTBox {
 	public static String hasName() {
 		String uri = NamespaceFactory.createTboxNamespace(NamespaceRegistry.theSEONTboxNameSpace, OntologyRegistry.main)
 				+ "hasName";
+		return uri;
+	}
+	
+	public static String hasURL() {
+		String uri = NamespaceFactory.createTboxNamespace(NamespaceRegistry.theSEONTboxNameSpace, OntologyRegistry.main)
+				+ "hasURL";
 		return uri;
 	}
 

@@ -6,6 +6,9 @@
  */
 package ca.concordia.cs.aseg.segps.ontologies.urigenerator.utils;
 
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox.BuildABox;
+import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.abox.MainABox;
+
 public class URLCleaner {
 	// This class removes all invalid chars from a given URL and make it ready
 	// to use as a part of another URL
@@ -31,4 +34,9 @@ public class URLCleaner {
 		}
 	}
 
+	public static void main(String[] args) {
+		System.out.println(clean("The Apache Software License, Version 2.0"));
+		System.out.println(MainABox.License("The Apache Software License, Version 2.0"));
+		System.out.println(BuildABox.BuildRelease("The Apache Software License, Version 2.0"));
+	}
 }

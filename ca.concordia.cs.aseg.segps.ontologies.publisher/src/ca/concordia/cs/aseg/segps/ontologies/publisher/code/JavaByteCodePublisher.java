@@ -22,7 +22,6 @@ import gr.uom.java.xmi.UMLClass;
 import gr.uom.java.xmi.UMLGeneralization;
 import gr.uom.java.xmi.UMLModel;
 import gr.uom.java.xmi.UMLOperation;
-import gr.uom.java.xmi.UMLParameter;
 import gr.uom.java.xmi.UMLRealization;
 
 public class JavaByteCodePublisher {

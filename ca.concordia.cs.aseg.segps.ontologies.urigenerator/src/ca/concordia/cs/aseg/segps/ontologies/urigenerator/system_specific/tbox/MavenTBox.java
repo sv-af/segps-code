@@ -40,24 +40,32 @@ public class MavenTBox {
 	}
 
 	public static String hasArtifactID() {
-		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasArtifactID";
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.maven) + "hasArtifactID";
 		return uri;
 	}
 
 	public static String hasDependencyScope() {
-		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasDependencyScope";
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.maven) + "hasDependencyScope";
 		return uri;
 	}
 
 	public static String hasDependencyType() {
-		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasDependencyType";
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.maven) + "hasDependencyType";
 		return uri;
 	}
 
 	public static String isOptionalDependency() {
-		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "isOptionalDependency";
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.maven) + "isOptionalDependency";
 		return uri;
 	}
 	
+	public static String hasLicenseName() {
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.maven) + "hasLicenseName";
+		return uri;
+	}
 	
+	public static String hasLicenseUrl() {
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.maven) + "hasLicenseUrl";
+		return uri;
+	}
 }
