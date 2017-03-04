@@ -32,9 +32,9 @@ public class Entry {
 
 	private String cweID;
 
-	private String referenceType;
-	private String referenceSource;
-	private String refernceURL;
+	private String referenceType="";
+	private String referenceSource="";
+	private String refernceURL="";
 	private ArrayList<String> referencesList;
 
 	private String summary;

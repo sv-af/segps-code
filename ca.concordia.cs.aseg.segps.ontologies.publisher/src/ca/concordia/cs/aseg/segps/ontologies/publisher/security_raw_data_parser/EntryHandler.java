@@ -19,7 +19,7 @@ public class EntryHandler extends DefaultHandler{
 	boolean isCveID, isAffectedProduct, isPublishedDatetime, isLastModifiedDatetime, isScore,
 			isAccessVector, isAccessComplexity, isAuthentication,
 			isConfidentialityImpact, isIntegrityImpact, isAvailabilityImpact,
-			isCweID, isReferenceType, isReferenceSource, isRefernceURL,
+			isCweID, isReferenceType, isReferenceSource=false, isRefernceURL,
 			isSummary;
 	// to capture reference_type from xml tag attributes
 	private String rt;

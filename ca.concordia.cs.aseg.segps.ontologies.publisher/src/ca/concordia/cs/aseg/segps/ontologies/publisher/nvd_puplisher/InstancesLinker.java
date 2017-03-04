@@ -24,7 +24,12 @@ public class InstancesLinker {
 	private String previous_version_regex1 = "((?:before)?(?:Before)?\\s(?:[\\d.])+[\\w-]+)\\b";
 	private String previous_version_regex2 = "((?:and earlier))";
 	
-		
+	private boolean validateStringContent(String content){
+		if(!content.isEmpty())
+			return true;
+		else
+			return false;
+	}
 	private void generalLayer(Entry currentEntry){
 	}
 	
@@ -61,10 +66,13 @@ public class InstancesLinker {
 				// rfl contain [Reference type (e.g. Unknown, Patch, ...etc), Reference Source, Reference Location (URL), ...]
 				for(int i=0; i<rfl.size(); ){
 					// ABox instances
-					String ReferenceURI = rfl.get(i+2);
-					// TBox instances
-					writer.addDeclarationTriple(ReferenceURI, RDF.type(), SecurityDBsTBox.Reference(), false);
-					writer.addIndividualTriple(cve, SecurityDBsTBox.hasReferenceURI(), ReferenceURI, false);
+					
+						String ReferenceURI = rfl.get(i);
+						if(validateStringContent(ReferenceURI) && ReferenceURI.contains("http")){
+						// TBox instances
+						writer.addDeclarationTriple(ReferenceURI, RDF.type(), SecurityDBsTBox.Reference(), false);
+						writer.addIndividualTriple(cve, SecurityDBsTBox.hasReferenceURI(), ReferenceURI, false);
+					}
 					i+=3;
 				}
 			}
@@ -173,76 +181,110 @@ public class InstancesLinker {
 				ArrayList<String> rfl = currentEntry.getReferencesList();
 				// rfl contain [Reference type (e.g. Unknown, Patch, ...etc),
 				// Reference Source, Reference Location (URL), ...]
-				for (int i = 0; i < rfl.size();) {
-					
-					String ReferenceType = rfl.get(i);
-					String ReferenceSource = rfl.get(i + 1);
-					String ReferenceURL = rfl.get(i + 2);
-										
+				for (int index = 0; index < rfl.size();) {
+
+					String ReferenceType = "", ReferenceSource = "", ReferenceURL = "";
+					/**
+					 * this is temporary solution for the ArrayLists indexes out
+					 * of bounds. Sometimes ArrayList include references with
+					 * incomplete information such as type, source or URL.
+					 */
+					if (((index + 2) / 3) == 0) {
+						ReferenceType = rfl.get(index);
+						ReferenceSource = rfl.get(index + 1);
+						ReferenceURL = rfl.get(index + 2);
+					} else {
+						ReferenceType = rfl.get(index);
+						ReferenceURL = rfl.get(index + 1);
+					}
 					// TBox instances
 					if (ReferenceType.equalsIgnoreCase("PATCH")) {
-						writer.addDeclarationTriple(ReferenceURL, RDF.type(),SecurityDBs_nvdTBox.PatchReference(), false);
-						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasPatchSource(), ReferenceSource, true);
-						writer.addIndividualTriple(cve, SecurityDBsTBox.hasStatus(), SecurityDBs_nvdTBox.Patched(), false);
+						writer.addDeclarationTriple(ReferenceURL, RDF.type(), SecurityDBs_nvdTBox.PatchReference(),
+								false);
+						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasPatchSource(), ReferenceSource,
+								true);
+						writer.addIndividualTriple(cve, SecurityDBsTBox.hasStatus(), SecurityDBs_nvdTBox.Patched(),
+								false);
 					} else if (ReferenceType.equalsIgnoreCase("UNKNOWN")) {
-						writer.addDeclarationTriple(ReferenceURL, RDF.type(),SecurityDBs_nvdTBox.UnknownReference(), false);
-						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasUnknownSource(), ReferenceSource, true);
-						// trying to optmize the vulnerablility status,
-						// so far, we can catputre the patched and detected status, 
-						// and if non of these status happen, then the vulnerability status should be still unkown.
-				//		writer.addIndividualTriple(cve, SecurityDBsTBox.hasStatus(), SecurityDBs_nvdTBox.Unknown(), false); 
-					} else if (ReferenceType.equalsIgnoreCase("VENDOR_ADVISORY") || ReferenceSource.equalsIgnoreCase("CONFIRM")) {
-						writer.addDeclarationTriple(ReferenceURL, RDF.type(),SecurityDBs_nvdTBox.VendorAdvisoryReference(),false);
-						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasVendorAdvisorySource(), ReferenceSource, true);
-						writer.addIndividualTriple(cve, SecurityDBsTBox.hasStatus(),SecurityDBs_nvdTBox.Detected(), false);
+						writer.addDeclarationTriple(ReferenceURL, RDF.type(), SecurityDBs_nvdTBox.UnknownReference(),
+								false);
+						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasUnknownSource(),
+								ReferenceSource, true);
+						/**
+						 * trying to optimize the vulnerability status, so far,
+						 * we can capture the patched and detected status, and
+						 * if non of these status happen, then the vulnerability
+						 * status should be still
+						 * unkown.writer.addIndividualTriple(cve,
+						 * SecurityDBsTBox.hasStatus(),
+						 * SecurityDBs_nvdTBox.Unknown(), false);
+						 */
+					} else if (ReferenceType.equalsIgnoreCase("VENDOR_ADVISORY")
+							|| ReferenceSource.equalsIgnoreCase("CONFIRM")) {
+						writer.addDeclarationTriple(ReferenceURL, RDF.type(),
+								SecurityDBs_nvdTBox.VendorAdvisoryReference(), false);
+						writer.addIndividualTriple(ReferenceURL, SecurityDBs_nvdTBox.hasVendorAdvisorySource(),
+								ReferenceSource, true);
+						writer.addIndividualTriple(cve, SecurityDBsTBox.hasStatus(), SecurityDBs_nvdTBox.Detected(),
+								false);
 					}
-					i += 3;
+					index += 3;
+
 				}
 			}
-			
+
 			double score = currentEntry.getScore();
-			if(score != -1){
-				//ABox instances
-				String scoreURI = SecurityDBsABox.Score(currentEntry.getcveID(),String.valueOf(score));
+			if (score != -1) {
+				// ABox instances
+				String scoreURI = SecurityDBsABox.Score(currentEntry.getcveID(), String.valueOf(score));
 				writer.addDeclarationTriple(scoreURI, RDF.type(), SecurityDBsTBox.BaseScoreMertrics(), false);
 				String severityLevel = null;
 				/**
-				 * 1. Vulnerabilities are labelled "Low" severity if they have a score of 0.0-3.9.
-				 * 2. Vulnerabilities will be labelled "Medium" severity if they have a score of 4.0-6.9.
-				 * 3. Vulnerabilities will be labelled "High" severity if they have a score of 7.0-10.0.
+				 * 1. Vulnerabilities are labelled "Low" severity if they have a
+				 * score of 0.0-3.9. 2. Vulnerabilities will be labelled
+				 * "Medium" severity if they have a score of 4.0-6.9. 3.
+				 * Vulnerabilities will be labelled "High" severity if they have
+				 * a score of 7.0-10.0.
 				 */
-				if(score <= 3.9){
+				if (score <= 3.9) {
 					severityLevel = SecurityDBs_nvdTBox.Low();
 					writer.addIndividualTriple(cve, SecurityDBsTBox.hasSeverity(), severityLevel, false);
-				}else if(score > 4 && score < 6.9){
+				} else if (score > 4 && score < 6.9) {
 					severityLevel = SecurityDBs_nvdTBox.Medium();
 					writer.addIndividualTriple(cve, SecurityDBsTBox.hasSeverity(), severityLevel, false);
-				}else if(score >= 7.0 ){
+				} else if (score >= 7.0) {
 					severityLevel = SecurityDBs_nvdTBox.High();
 					writer.addIndividualTriple(cve, SecurityDBsTBox.hasSeverity(), severityLevel, false);
 				}
 				writer.addDeclarationTriple(severityLevel, RDF.type(), SecurityDBsTBox.VulnerabilitySeverity(), false);
 				writer.addIndividualTriple(severityLevel, SecurityDBsTBox.hasSeverityScore(), scoreURI, false);
-				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasAccessComplexity(), currentEntry.getAccessComplexity(), true);
-				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasAccessVector(), currentEntry.getAccessVector(), true);
-				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasAuthentication(), currentEntry.getAuthentication(), true);
-				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasAvailabilityImpact(), currentEntry.getAvailabilityImpact(),true);
-				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasIntegrityImpact(), currentEntry.getIntegrityImpact(), true);
-				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasConfidentialityImpact(), currentEntry.getConfidentialityImpact(), true);
+				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasAccessComplexity(),
+						currentEntry.getAccessComplexity(), true);
+				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasAccessVector(), currentEntry.getAccessVector(),
+						true);
+				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasAuthentication(),
+						currentEntry.getAuthentication(), true);
+				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasAvailabilityImpact(),
+						currentEntry.getAvailabilityImpact(), true);
+				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasIntegrityImpact(),
+						currentEntry.getIntegrityImpact(), true);
+				writer.addIndividualTriple(scoreURI, SecurityDBsTBox.hasConfidentialityImpact(),
+						currentEntry.getConfidentialityImpact(), true);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	public void distributer(Entry currentEntry){
-		
-		this.currentEntry = currentEntry;
-		writer = new NtriplesWriter("C:/Users/umroot/workspace/data/triples/sevont.nt",100000, 500000);
 
-//		System.out.println("Mapping "+ this.currentEntry.getcveID()+" facts into SEVONT layers");
-		
+	public void distributer(Entry currentEntry) {
+
+		this.currentEntry = currentEntry;
+		writer = new NtriplesWriter("C:/Users/umroot/workspace/data/triples/sevont.nt", 100000, 500000);
+
+		// System.out.println("Mapping "+ this.currentEntry.getcveID()+" facts
+		// into SEVONT layers");
+
 		// Populate triples for General layer
 		generalLayer(this.currentEntry);
 		// Populate triples for Domain-Spanning layer
