@@ -19,10 +19,10 @@ public abstract class CVSPublisher {
 	public void publishFromArtifactList(List<CVSArtifact> artifacts, String outputLocation) throws Exception {
 		NtriplesWriter triplesWriter = new NtriplesWriter(outputLocation, declarationSize, individualSize);
 		for (CVSArtifact artifact : artifacts) {
-			System.out.println(artifact.toString());
+			// System.out.println(artifact.toString());
 			createTriples(artifact, triplesWriter);
 		}
-		// triplesWriter.flushAndClose();
+		triplesWriter.flushAndClose();
 	}
 
 	public void publishFromRevisionList(List<String> revisionURLS, String outputLocation) throws Exception {
@@ -95,15 +95,12 @@ public abstract class CVSPublisher {
 					true);
 
 		}
-		
-		//Add tags for explicitly mentioned CVEs
-		 Matcher m = Pattern.compile("CVE-\\d{4}-\\d{4,7}")
-		     .matcher(artifact.getCommitMessage());
-		 while (m.find()) {
-			 ntriplesWriter.addIndividualTriple(commitURI,RDFS.label(), m.group(), true);
-		 }
-		 
-		 
+
+		// Add tags for explicitly mentioned CVEs
+		Matcher m = Pattern.compile("CVE-\\d{4}-\\d{4,7}").matcher(artifact.getCommitMessage());
+		while (m.find()) {
+			ntriplesWriter.addIndividualTriple(commitURI, RDFS.label(), m.group(), true);
+		}
 
 	}
 
@@ -142,6 +139,8 @@ public abstract class CVSPublisher {
 		}
 		return processedLink;
 	}
+
+	public abstract String convertDate(String date);
 
 	
 }

@@ -23,11 +23,11 @@ import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox.B
 public class Main {
 
 	public static void main(String[] args) {
-		publishSecurity("E:/DEVELOPMENT/NVD/zipped","E:/DEVELOPMENT/NVD/unzipped");
+		//publishSecurity("E:/DEVELOPMENT/NVD/zipped","E:/DEVELOPMENT/NVD/unzipped");
 		publishHistory();
-		publishCode();
-		publishCodeHistory();
-		publishBuild(Utils.MAVEN_INDEX_LOCATION + "uniqueArtifacts", "out.nt");
+		//publishCode();
+		//publishCodeHistory();
+		//publishBuild(Utils.MAVEN_INDEX_LOCATION + "uniqueArtifacts", "out.nt");
 		
 	}
 

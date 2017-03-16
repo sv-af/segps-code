@@ -13,6 +13,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -54,7 +55,8 @@ public class GithubPublisher extends CVSPublisher {
 				artifact.setCommitMessage(commitObject.getString("message"));
 				JSONObject authorObject = commitObject.getJSONObject("author");
 				JSONObject committerObject = commitObject.getJSONObject("committer");
-				artifact.setCommitDate(committerObject.getString("date"));
+				String dateStr = committerObject.getString("date");
+				artifact.setCommitDate(convertDate(dateStr));
 				artifact.setCommitter(committerObject.getString("name"));
 				if (authorObject == null) {
 					artifact.setAuthor(artifact.getCommitter());
@@ -90,5 +92,12 @@ public class GithubPublisher extends CVSPublisher {
 			map.put(file, versionedFile);
 		}
 		return map;
+	}
+
+	@Override
+	public String convertDate(String dateStr) {
+		//DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+		DateTime dateTime = new DateTime("dateStr");
+		return dateTime.toString();
 	}
 }
