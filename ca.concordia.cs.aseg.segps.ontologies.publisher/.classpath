@@ -13,12 +13,14 @@
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/ca.concordia.cs.aseg.segps.ontologies.urigenerator"/>
 	<classpathentry kind="lib" path="lib/zip4j_1.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/jena-core-3.0.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/maven-processor"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/javaparser"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/XMI Diff"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

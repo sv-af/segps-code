@@ -24,12 +24,7 @@ public class BuildTBox {
 		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "BuildRelease";
 		return uri;
 	}
-	
-	/*public static String DependencyExclusion(){
-		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "DependencyExclusion";
-		return uri;
-	}*/
-	
+		
 	public static String DependencyLink(){
 		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "DependencyLink";
 		return uri;
@@ -39,6 +34,11 @@ public class BuildTBox {
 	 */
 	public static String hasVersionNumber(){
 		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasVersionNumber";
+		return uri;
+	}
+	
+	public static String hasNumberOfExclusions(){
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasNumberOfExclusions";
 		return uri;
 	}
 	
@@ -62,14 +62,23 @@ public class BuildTBox {
 		return uri;
 	}
 	
-	/*public static String hasExclusion(){
-		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasExclusion";
-		return uri;
-	}*/
-
-	public static String excludesProduct() {
-		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "excludesProduct";
+	public static String excludesProject() {
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "excludesProject";
 		return uri;
 	}
 	
+	public static String hasBuildDependencyOn() {
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasBuildDependencyOn";
+		return uri;
+	}
+	
+	public static String hasOptionalBuildDependencyOn() {
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasOptionalBuildDependencyOn";
+		return uri;
+	}
+	
+	public static String hasNonOptionalBuildDependencyOn() {
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasNonOptionalBuildDependencyOn";
+		return uri;
+	}
 }

@@ -4,7 +4,7 @@
  * http://aseg.cs.concordia.ca/segps
  * Please see the LICENSE file for details.
  */
-package ca.concordia.cs.aseg.segps.ontologies.publisher.ntriples;
+package ca.concordia.cs.aseg.segps.ontologies.publisher.util;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

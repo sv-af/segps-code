@@ -8,7 +8,7 @@ import java.util.jar.JarFile;
 
 import ca.concordia.cs.aseg.maven.util.Utils;
 import ca.concordia.cs.aseg.segps.code.bytecode.BytecodeReader;
-import ca.concordia.cs.aseg.segps.ontologies.publisher.ntriples.NtriplesWriter;
+import ca.concordia.cs.aseg.segps.ontologies.publisher.util.NtriplesWriter;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox.BuildABox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox.CodeABox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.tbox.CodeTBox;
@@ -253,9 +253,5 @@ public class JavaByteCodePublisher {
 		return owner;
 	}
 
-	public static void main(String[] args) {
-		String projectURI = BuildABox.BuildRelease("aseg:testCallgraph:1.0");
-		new JavaByteCodePublisher().publish(new File("testCallgraph.jar"), projectURI, new ArrayList<String>(),
-				"out.nt");
-	}
+	
 }

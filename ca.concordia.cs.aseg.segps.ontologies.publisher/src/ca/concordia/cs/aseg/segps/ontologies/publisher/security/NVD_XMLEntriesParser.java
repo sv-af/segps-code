@@ -4,7 +4,7 @@
  * http://aseg.cs.concordia.ca/segps
  * Please see the LICENSE file for details.
  */
-package ca.concordia.cs.aseg.segps.ontologies.publisher.security_raw_data_parser;
+package ca.concordia.cs.aseg.segps.ontologies.publisher.security;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,27 +20,6 @@ import net.lingala.zip4j.exception.ZipException;
 
 public class NVD_XMLEntriesParser {
 
-	private static String dataCorpusPath = "C:/Users/umroot/workspace/data/unzipped";
-	private static String downloadedData = "C:/Users/umroot/workspace/data/zipped";
-	
-	public static void main(String[] args) {
-		
-		/**
-		 * Unzipping  the nvdcve-*.xml.zip files 
-		 */
-		File zippedFiles = new File(downloadedData);
-		File[] nvdXMLZipFeeds = zippedFiles.listFiles();
-		for(File file: nvdXMLZipFeeds){
-			System.out.println("file unzip: "+ file.getName());
-			unzip(file.getAbsolutePath());
-		}
-		
-		/**
-		 * Extracting and parsing NVD xml feeds
-		 */
-		extractData(dataCorpusPath);
-	}
-	
 	public static void extractData(String corpus){
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		try {
@@ -58,14 +37,14 @@ public class NVD_XMLEntriesParser {
 		}
 	}
 	
-	public static void unzip(String dataSource){
+	public static void unzip(String dataSource, String dataDestination){
 	    String password = "password";
 	    try {
 	         ZipFile zipFile = new ZipFile(dataSource);
 	         if (zipFile.isEncrypted()) {
 	            zipFile.setPassword(password);
 	         }
-	         zipFile.extractAll(dataCorpusPath);
+	         zipFile.extractAll(dataDestination);
 	    } catch (ZipException e) {
 	        e.printStackTrace();
 	    }
