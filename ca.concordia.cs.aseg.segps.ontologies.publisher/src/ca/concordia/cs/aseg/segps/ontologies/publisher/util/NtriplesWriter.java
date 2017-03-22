@@ -18,6 +18,7 @@ public class NtriplesWriter {
 	String outputFileAddress = "";
 	boolean bClosed = false;
 	int maxNumberOfTriples,maxNumberOfIndividualTriples;
+	int triplesCreated;
 
 	public NtriplesWriter(String OutputFileAddress, int expectedNumberOfIndividualTriple, int expectedNumberOfDeclarationTriple) {
 		outputFileAddress = OutputFileAddress;
@@ -25,6 +26,7 @@ public class NtriplesWriter {
 		maxNumberOfIndividualTriples = expectedNumberOfIndividualTriple;
 		declaration_triples = new HashSet<String>();
 		individual_triples = new HashSet<String>();
+		triplesCreated=0;
 	}
 
 	public void addDeclarationTriple(String subject, String predicate,
@@ -46,6 +48,7 @@ public class NtriplesWriter {
 			if (declaration_triples.size() == maxNumberOfTriples) {
 				flushAndContinue(declaration_triples);
 			}
+			triplesCreated++;
 		} else {
 			throw (new Exception(
 					"You can not add triple anymore, since you have flushed and closed already"));
@@ -71,6 +74,7 @@ public class NtriplesWriter {
 			if (individual_triples.size() == maxNumberOfIndividualTriples) {
 				flushAndContinue(individual_triples);
 			}
+			triplesCreated++;
 		} else {
 			throw (new Exception(
 					"You can not add triple anymore, since you have flushed and closed already"));
@@ -140,6 +144,7 @@ public class NtriplesWriter {
 		bufferedWriter.flush();
 		bufferedWriter.close();
 		bClosed = true;
+		System.out.println("Total triples created: "+triplesCreated);
 	}
 
 	// com.hp.hpl.jena.n3.N3JenaWriterCommon

@@ -79,7 +79,7 @@ public class SVNPublisher extends CVSPublisher {
 					int pos = dateStr.indexOf("(");
 					dateStr = dateStr.substring(0, pos);
 				}
-				artifact.setCommitDate(dateStr.trim());
+				artifact.setCommitDate(convertDate(dateStr.trim()));
 			}
 			if (idElements != null && idElements.size() > 0)
 				artifact.setCommitID(idElements.get(0));

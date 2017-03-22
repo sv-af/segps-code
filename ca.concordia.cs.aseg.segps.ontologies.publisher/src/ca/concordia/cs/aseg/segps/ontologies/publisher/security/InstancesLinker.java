@@ -1,9 +1,18 @@
 package ca.concordia.cs.aseg.segps.ontologies.publisher.security;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.joda.time.DateTime;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import ca.concordia.cs.aseg.segps.ontologies.publisher.history.CVSPublisher;
 import ca.concordia.cs.aseg.segps.ontologies.publisher.util.NtriplesWriter;
@@ -47,7 +56,14 @@ public class InstancesLinker {
 			writer.addDeclarationTriple(cve, RDF.type(), SecurityDBsTBox.Vulnerability(), false);
 			writer.addIndividualTriple(cve, SecurityDBsTBox.hasVulnerabilityId(), currentEntry.getcveID(), true);
 
-			/** Add publication(disclosure) date and modification date **/
+			/**
+			 * Add creation date, publication(disclosure) date and modification
+			 * date
+			 **/
+			String creationDate = getCreationDate(currentEntry.getcveID());
+			if (creationDate != null && !creationDate.isEmpty()) {
+				writer.addIndividualTriple(cve, MainTBox.hasCreationDate(), creationDate, true);
+			}
 			writer.addIndividualTriple(cve, SecurityDBsTBox.hasPublishedDate(), currentEntry.getPublishedDatetime(),
 					true);
 			writer.addIndividualTriple(cve, SecurityDBsTBox.hasModifiedDate(), currentEntry.getLastModifiedDatetime(),
@@ -343,4 +359,39 @@ public class InstancesLinker {
 		}
 	}
 
+	private String getCreationDate(String cveID) throws ParseException {
+		String result=null;
+		String url ="http://www.cve.mitre.org/cgi-bin/cvename.cgi?name="+cveID;
+		try {
+			Document doc = Jsoup.connect(url).get();
+			Elements trElements = doc.select("tr");
+			for (Element elem : trElements) {
+				// System.out.println(elem);
+				if (elem.text().contains("Date Entry Created")) {
+					Element nextElem = elem.nextElementSibling();
+					String dateStr =nextElem.getElementsByTag("td").get(0).text();
+					
+					
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+					Date fmtDate = dateFormat.parse(dateStr);
+					//System.out.println(fmtDate);
+					DateTime dateTime = new DateTime(fmtDate);
+					result=dateTime.toString();
+				}
+			}
+
+		} catch (IOException e) {
+			System.out.println("Exception caught on: " + url);
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/*public static void main(String[] args) {
+		try {
+			System.out.println(new InstancesLinker().getCreationDate("CVE-2008-4582"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}*/
 }

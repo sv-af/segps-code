@@ -51,7 +51,7 @@ public class Main {
 		System.out.println("Publishing History triples...");
 		CVSPublisher cvsPublisher = null;
 		List<CVSArtifact> artifacts = new ArrayList<>();
-		String excelLoc = "D:\\Google Drive\\ASEG Project\\Conferences 2017\\ICST 2017 - accepted\\experiment\\NVDPatchLinks.xls";
+		String excelLoc = "E:\\Google Drive\\ASEG Project\\Conferences 2017\\ICST 2017 - accepted\\experiment\\NVDPatchLinks.xls";
 		String sheet1 = "NVD-SVN", sheet2 = "NVD-GIT";
 		try {
 			FileInputStream inputStream = new FileInputStream(new File(excelLoc));
@@ -70,7 +70,6 @@ public class Main {
 				String url = row.getCell(1).getStringCellValue();
 				artifact = cvsPublisher.createArtifact(url);
 				artifacts.add(artifact);
-				break;
 			}
 
 			Iterator<Row> rowIterator2 = gitSheet.iterator();
@@ -82,11 +81,10 @@ public class Main {
 				String url = row.getCell(1).getStringCellValue();
 				artifact = cvsPublisher.createArtifact(url);
 				artifacts.add(artifact);
-				break;
 			}
 			workbook.close();
 			System.out.println("--Publishing triples from artifact list...");
-			cvsPublisher.publishFromArtifactList(artifacts, "triples.nt");
+			cvsPublisher.publishFromArtifactList(artifacts, "history.nt");
 			System.out.println("Done!\n");
 		} catch (Exception e) {
 			e.printStackTrace();

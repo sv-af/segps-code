@@ -10,6 +10,7 @@ public class OntologyRegistry {
 
 	// SE-ON ontologies registry
 	public static String main="general/2012/02/main.owl#";
+	public static String measurement="general/2012/02/measurement.owl#";
 	public static String code="domain-specific/2012/02/code.owl#";
 	public static String java="system-specific/2012/02/java.owl#";
 	public static String issues="system-specific/2012/02/issues.owl#";

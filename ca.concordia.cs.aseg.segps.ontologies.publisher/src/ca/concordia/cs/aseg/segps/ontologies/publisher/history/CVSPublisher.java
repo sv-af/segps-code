@@ -51,49 +51,51 @@ public abstract class CVSPublisher {
 	public abstract Map<String, String> createFileVersionMap(List<String> changeset);
 
 	private void createTriples(CVSArtifact artifact, NtriplesWriter ntriplesWriter) throws Exception {
-		System.out.println(artifact);
+		// System.out.println(artifact);
+		if (artifact == null)
+			return;
+		if (artifact.getRevisionURL() == null || artifact.getRevisionURL().trim().isEmpty())
+			return;
+
 		String commitURI = HistoryABox.Commit(artifact.getRevisionURL());
-		String committerURI = HistoryABox.Committer(artifact.getCommitter());
-		String changesetURI = HistoryABox.ChangeSet(artifact.getCommitID(), artifact.getCommitter(),
-				artifact.getCommitDate());
-
-		// create triples for types
 		ntriplesWriter.addDeclarationTriple(commitURI, RDF.type(), HistoryTBox.Commit(), false);
-		ntriplesWriter.addDeclarationTriple(committerURI, RDF.type(), HistoryTBox.Committer(), false);
-		ntriplesWriter.addDeclarationTriple(changesetURI, RDF.type(), HistoryTBox.ChangeSet(), false);
-
-		// create relationship between types
-		ntriplesWriter.addIndividualTriple(committerURI, HistoryTBox.performsCommit(), commitURI, false);
-		ntriplesWriter.addIndividualTriple(committerURI, HistoryTBox.commitsChangeSet(), changesetURI, false);
-
-		// create data properties
-		ntriplesWriter.addIndividualTriple(changesetURI, HistoryTBox.committedOn(), artifact.getCommitDate(), true);
-		ntriplesWriter.addIndividualTriple(changesetURI, HistoryTBox.hasCommitMessage(), artifact.getCommitMessage(),
-				true);
 		ntriplesWriter.addIndividualTriple(commitURI, MainTBox.hasIdentifier(), artifact.getCommitID(), true);
-		ntriplesWriter.addIndividualTriple(committerURI, MainTBox.hasName(), artifact.getCommitter(), true);
 		ntriplesWriter.addIndividualTriple(commitURI, MainTBox.hasURL(), artifact.getRevisionURL(), true);
+
+		String committerURI = HistoryABox.Committer(artifact.getCommitter());
+		ntriplesWriter.addDeclarationTriple(committerURI, RDF.type(), HistoryTBox.Committer(), false);
+		ntriplesWriter.addIndividualTriple(committerURI, HistoryTBox.performsCommit(), commitURI, false);
+		ntriplesWriter.addIndividualTriple(committerURI, MainTBox.hasName(), artifact.getCommitter(), true);
 		if (artifact.getAuthor() != null) {
 			ntriplesWriter.addIndividualTriple(commitURI, MainTBox.hasAuthor(), artifact.getAuthor(), true);
 		}
 
+		String changesetURI = HistoryABox.ChangeSet(artifact.getCommitID(), artifact.getCommitter(),
+				artifact.getCommitDate());
+		ntriplesWriter.addDeclarationTriple(changesetURI, RDF.type(), HistoryTBox.ChangeSet(), false);
+		ntriplesWriter.addIndividualTriple(committerURI, HistoryTBox.commitsChangeSet(), changesetURI, false);
+		ntriplesWriter.addIndividualTriple(changesetURI, HistoryTBox.committedOn(), artifact.getCommitDate(), true);
+		ntriplesWriter.addIndividualTriple(changesetURI, HistoryTBox.hasCommitMessage(), artifact.getCommitMessage(),
+				true);
+
 		// Create types, object and data properties for files in changed set
-		for (String file : artifact.getChangeSet().keySet()) {
-			String versionFile = artifact.getChangeSet().get(file);
-			String fileURI = HistoryABox.FileUnderVersionControl(file);
-			ntriplesWriter.addDeclarationTriple(fileURI, RDF.type(), HistoryTBox.FileUnderVersionControl(), false);
+		if (artifact.getChangeSet() != null && !artifact.getChangeSet().isEmpty()) {
+			for (String file : artifact.getChangeSet().keySet()) {
+				String versionFile = artifact.getChangeSet().get(file);
+				String fileURI = HistoryABox.FileUnderVersionControl(file);
+				ntriplesWriter.addDeclarationTriple(fileURI, RDF.type(), HistoryTBox.FileUnderVersionControl(), false);
 
-			String versionURI = HistoryABox.Version(versionFile);
-			ntriplesWriter.addDeclarationTriple(versionURI, RDF.type(), HistoryTBox.Version(), false);
+				String versionURI = HistoryABox.Version(versionFile);
+				ntriplesWriter.addDeclarationTriple(versionURI, RDF.type(), HistoryTBox.Version(), false);
 
-			ntriplesWriter.addIndividualTriple(committerURI, HistoryTBox.commitsVersion(), versionURI, false);
-			ntriplesWriter.addIndividualTriple(commitURI, HistoryTBox.constituesVersion(), versionURI, false);
-			ntriplesWriter.addIndividualTriple(changesetURI, HistoryTBox.containsVersion(), versionURI, false);
-			ntriplesWriter.addIndividualTriple(fileURI, HistoryTBox.hasVersion(), versionURI, false);
+				ntriplesWriter.addIndividualTriple(committerURI, HistoryTBox.commitsVersion(), versionURI, false);
+				ntriplesWriter.addIndividualTriple(commitURI, HistoryTBox.constituesVersion(), versionURI, false);
+				ntriplesWriter.addIndividualTriple(changesetURI, HistoryTBox.containsVersion(), versionURI, false);
+				ntriplesWriter.addIndividualTriple(fileURI, HistoryTBox.hasVersion(), versionURI, false);
 
-			ntriplesWriter.addIndividualTriple(versionURI, HistoryTBox.hasContentIdentifier(), artifact.getCommitID(),
-					true);
-
+				ntriplesWriter.addIndividualTriple(versionURI, HistoryTBox.hasContentIdentifier(),
+						artifact.getCommitID(), true);
+			}
 		}
 
 		// Add tags for explicitly mentioned CVEs
@@ -142,5 +144,4 @@ public abstract class CVSPublisher {
 
 	public abstract String convertDate(String date);
 
-	
 }

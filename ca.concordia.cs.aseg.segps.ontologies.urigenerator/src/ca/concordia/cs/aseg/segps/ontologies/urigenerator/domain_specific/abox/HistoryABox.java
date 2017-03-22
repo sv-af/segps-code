@@ -42,9 +42,13 @@ public class HistoryABox {
 	}
 
 	public static String Version(String version) {
-		String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
-				OntologyRegistry.history) + URLCleaner.clean(version);
-		return uri;
+		if (version.startsWith("http")) {
+			return version;
+		} else {
+			String uri = NamespaceFactory.createAboxNamespace(NamespaceRegistry.theSEONAboxNameSpace,
+					OntologyRegistry.history) + URLCleaner.clean(version);
+			return uri;
+		}
 	}
 
 	public static String FileUnderVersionControl(String file) {
