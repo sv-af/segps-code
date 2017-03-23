@@ -105,18 +105,8 @@ public class InstancesLinker {
 				// ABox instances
 				String affectedRelease = "";
 				String versionID = "";
-				String temp = affectedProducts.get(i).replaceAll("\\s+", "");// removes
-																				// all
-																				// whitespace
-																				// and
-																				// non
-																				// visible
-																				// characters
-																				// such
-																				// as
-																				// tab,
-																				// \n
-																				// .
+				/**removes all whitespace and non visible characters such as tab, \n.**/
+				String temp = affectedProducts.get(i).replaceAll("\\s+", "");
 				String[] split = temp.split(":"); // e.g.
 													// cpe:/a:vendor_name:product_name:version:quantifier.
 				if (split.length > 5) {
@@ -197,16 +187,9 @@ public class InstancesLinker {
 				String summaryURI = SecurityDBsABox.Summary(currentEntry.getcveID());
 				writer.addIndividualTriple(summaryURI, RDF.type(), SecurityDBsTBox.Summary(), false);
 				writer.addIndividualTriple(cve, SecurityDBsTBox.hasSummary(), summaryURI, false);
-				writer.addIndividualTriple(summaryURI, MainTBox.hasDescription(), currentEntry.getSummary(), true); // we
-																													// can
-																													// use
-																													// the
-																													// sub-data
-																													// property
-																													// 'vulnerabilityDescrption'
-
-				// Extracting the affected artifacts (file/folder locations)
-				// from cve summary (if any).
+				/**we can use the sub-data property 'vulnerabilityDescrption' **/
+				writer.addIndividualTriple(summaryURI, MainTBox.hasDescription(), currentEntry.getSummary(), true); 
+				/** Extracting the affected artifacts (file/folder locations) from cve summary (if any) **/
 				Matcher flMatcher = Pattern.compile(file_location_regex).matcher(currentEntry.getSummary());
 				while (flMatcher.find()) {
 					String fl = flMatcher.group(1).replaceAll("/", "_");
@@ -228,11 +211,11 @@ public class InstancesLinker {
 		try {
 			if (currentEntry.getReferencesList() != null) {
 				ArrayList<String> rfl = currentEntry.getReferencesList();
-				/*
+				/**
 				 * if(rfl.size()%3>0){ System.out.println(rfl.toString()); }
-				 */
-				// rfl contain [Reference type (e.g. Unknown, Patch, ...etc),
-				// Reference Source, Reference Location (URL), ...]
+				 *
+				 * rfl contain [Reference type (e.g. Unknown, Patch, ...etc),
+				 * Reference Source, Reference Location (URL), ...]**/
 				for (int index = 0; index < rfl.size();) {
 
 					String ReferenceType = "", ReferenceSource = "", ReferenceURL = "";
@@ -339,7 +322,7 @@ public class InstancesLinker {
 		// writer = new
 		// NtriplesWriter("C:/Users/umroot/workspace/data/triples/sevont.nt",
 		// 100000, 500000);
-		writer = new NtriplesWriter("E:/DEVELOPMENT/NVD/sevont.nt", 100000, 500000);
+		writer = new NtriplesWriter("C:/Users/umroot/workspace/data/triples/sevont.nt", 100000, 500000);
 
 		// System.out.println("Mapping "+ this.currentEntry.getcveID()+" facts
 		// into SEVONT layers");

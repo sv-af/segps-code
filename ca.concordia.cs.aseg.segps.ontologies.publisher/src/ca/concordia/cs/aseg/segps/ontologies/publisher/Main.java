@@ -10,7 +10,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 
-import ca.concordia.cs.aseg.maven.util.Utils;
+
 import ca.concordia.cs.aseg.segps.ontologies.publisher.build.MavenPublisher;
 import ca.concordia.cs.aseg.segps.ontologies.publisher.code.JavaByteCodePublisher;
 import ca.concordia.cs.aseg.segps.ontologies.publisher.history.CVSArtifact;
@@ -23,8 +23,8 @@ import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox.B
 public class Main {
 
 	public static void main(String[] args) {
-		//publishSecurity("E:/DEVELOPMENT/NVD/zipped","E:/DEVELOPMENT/NVD/unzipped");
-		publishHistory();
+		publishSecurity("C:/Users/umroot/workspace/data/zipped","C:/Users/umroot/workspace/data/unzipped");
+		//publishHistory();
 		//publishCode();
 		//publishCodeHistory();
 		//publishBuild(Utils.MAVEN_INDEX_LOCATION + "uniqueArtifacts", "out.nt");
