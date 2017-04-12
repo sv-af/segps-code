@@ -24,10 +24,10 @@ public class MavenPublisher {
 	private int declarationSize = 100000, individualSize = 500000;
 
 	/*
-	 * Publish triples from directory of POMs
+	 * Publish triples, by default from indexFile
 	 */
 	public void publish(String outputFileLocation, String directory) {
-		publish(outputFileLocation, directory, 0);
+		publish(outputFileLocation, directory, 2);
 	}
 
 	/*
@@ -148,21 +148,16 @@ public class MavenPublisher {
 		NtriplesWriter triplesWriter = new NtriplesWriter(outputFileLocation, declarationSize, individualSize);
 		File index = new File(indexFileLocation);
 		List<String> indexitems = FileUtils.readLines(index);
-		//int count = 0;
 		for (String item : indexitems) {
 			MavenArtifact mavenArtifact = MavenArtifact.getArtifactFromGAV(item);
 			if (mavenArtifact != null) {
 				try {
 					createTriples(mavenArtifact, triplesWriter);
-					//count++;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 			item = null;
-			/*
-			 * if (count == 100) break;
-			 */
 		}
 		triplesWriter.flushAndClose();
 	}

@@ -23,18 +23,17 @@ import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox.B
 public class Main {
 
 	public static void main(String[] args) {
-		//publishSecurity("E:/DEVELOPMENT/NVD/zipped","E:/DEVELOPMENT/NVD/unzipped");
-		publishHistory();
-		//publishCode();
-		//publishCodeHistory();
-		//publishBuild(Utils.MAVEN_INDEX_LOCATION + "uniqueArtifacts", "out.nt");
-		
+		Utils.initProperties();
+		// publishSecurity("E:/DEVELOPMENT/NVD/zipped","E:/DEVELOPMENT/NVD/unzipped");
+		// publishHistory();
+		publishCode();
+		// publishCodeHistory();
+		// publishBuild(Utils.MAVEN_INDEX_LOCATION + "uniqueArtifacts", Utils.TRIPLES_LOCATION + "build.nt");
+
 	}
 
 	private static void publishBuild(String indexFileLoc, String outputLoc) {
-		System.out.println("Publishing Build triples...");
-		//String index = Utils.MAVEN_INDEX_LOCATION + "uniqueArtifacts";
-		//String output = "out.nt";
+		System.out.println("Publishing Build triples \n\tFrom: " + indexFileLoc + "\n\tTo: " + outputLoc + "...");
 		new MavenPublisher().publish(outputLoc, indexFileLoc, 2);
 		System.out.println("Done!\n");
 	}
