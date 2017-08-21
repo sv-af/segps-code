@@ -7,15 +7,14 @@ import java.util.Set;
 import java.util.jar.JarFile;
 
 import ca.concordia.cs.aseg.maven.util.Utils;
-import ca.concordia.cs.aseg.segps.code.bytecode.BytecodeReader;
 import ca.concordia.cs.aseg.segps.ontologies.publisher.util.NtriplesWriter;
-import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox.BuildABox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.abox.CodeABox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.domain_specific.tbox.CodeTBox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.abox.MainABox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.tbox.MainTBox;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.general.tbox.RDF;
 import ca.concordia.cs.aseg.segps.ontologies.urigenerator.system_specific.tbox.JavaTBox;
+import cs.aseg.codeanalyzer.bytecode.BytecodeReader;
 import gr.uom.java.xmi.AccessedMember;
 import gr.uom.java.xmi.MethodCall;
 import gr.uom.java.xmi.UMLClass;
@@ -205,7 +204,7 @@ public class JavaByteCodePublisher {
 		List<UMLRealization> realizations = model.getRealizationList();
 		List<UMLGeneralization> generalizations = model.getGeneralizationList();
 		for (UMLRealization realization : realizations) {
-			String clientURI = CodeABox.ClassType(project, realization.getClient());
+			String clientURI = CodeABox.ClassType(project, realization.getClient().getName());
 			String provider = getComplexTypeOwner(realization.getSupplier(), dependentModels);
 			if (provider != null) {
 				String providerURI = CodeABox.ClassType(provider, realization.getSupplier());
@@ -214,7 +213,7 @@ public class JavaByteCodePublisher {
 			// System.out.println("Realization: " + realization);
 		}
 		for (UMLGeneralization generalization : generalizations) {
-			String clientURI = CodeABox.ClassType(project, generalization.getChild());
+			String clientURI = CodeABox.ClassType(project, generalization.getChild().getName());
 			String provider = getComplexTypeOwner(generalization.getParent(), dependentModels);
 			if (provider != null) {
 				String providerURI = CodeABox.ClassType(provider, generalization.getParent());

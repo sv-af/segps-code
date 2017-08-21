@@ -28,7 +28,8 @@ public class Main {
 		// publishHistory();
 		publishCode();
 		// publishCodeHistory();
-		// publishBuild(Utils.MAVEN_INDEX_LOCATION + "uniqueArtifacts", Utils.TRIPLES_LOCATION + "build.nt");
+		// publishBuild(Utils.MAVEN_INDEX_LOCATION + "uniqueArtifacts",
+		// Utils.TRIPLES_LOCATION + "build.nt");
 
 	}
 
@@ -40,9 +41,20 @@ public class Main {
 
 	private static void publishCode() {
 		System.out.println("Publishing Code triples...");
-		String projectURI = BuildABox.BuildRelease("aseg:testCallgraph:1.0");
-		new JavaByteCodePublisher().publish(new File("testCallgraph.jar"), projectURI, new ArrayList<String>(),
-				"out.nt");
+		String project1URI = BuildABox.BuildRelease("net.sf.click:click-nodeps:0.18");
+		List<String> dependents1 = new ArrayList<String>();
+		dependents1.add("commons-fileupload:commons-fileupload:1.1");
+
+		String project2URI = BuildABox.BuildRelease("org.apache.openejb:openejb-webadmin:3.1");
+		List<String> dependents2 = new ArrayList<String>();
+		dependents2.add("commons-fileupload:commons-fileupload:1.2");
+
+		new JavaByteCodePublisher().publish(new File("click-nodeps-0.18.jar"), project1URI, dependents1, "out.nt");
+		new JavaByteCodePublisher().publish(new File("openejb-webadmin-3.1.jar"), project2URI, dependents2, "out.nt");
+		new JavaByteCodePublisher().publish(new File("commons-fileupload-1.1.jar"),
+				"commons-fileupload:commons-fileupload:1.1", new ArrayList<>(), "out.nt");
+		new JavaByteCodePublisher().publish(new File("commons-fileupload-1.2.jar"),
+				"commons-fileupload:commons-fileupload:1.2", new ArrayList<>(), "out.nt");
 		System.out.println("Done!\n");
 	}
 
@@ -94,8 +106,8 @@ public class Main {
 		System.out.println("Publishing Security triples...");
 		// String dataCorpusPath = "C:/Users/umroot/workspace/data/unzipped";
 		// String downloadedData = "C:/Users/umroot/workspace/data/zipped";
-		//String dataCorpusPath = "E:/DEVELOPMENT/NVD/unzipped";
-		//String downloadedData = "E:/DEVELOPMENT/NVD/zipped";
+		// String dataCorpusPath = "E:/DEVELOPMENT/NVD/unzipped";
+		// String downloadedData = "E:/DEVELOPMENT/NVD/zipped";
 		/**
 		 * Unzipping the nvdcve-*.xml.zip files
 		 */

@@ -81,4 +81,9 @@ public class BuildTBox {
 		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasNonOptionalBuildDependencyOn";
 		return uri;
 	}
+	
+	public static String hasTransitiveBuildDependencyOn() {
+		String uri= NamespaceFactory.createTboxNamespace(NamespaceRegistry.theTboxNameSpace, OntologyRegistry.build) + "hasTransitiveBuildDependencyOn";
+		return uri;
+	}
 }
