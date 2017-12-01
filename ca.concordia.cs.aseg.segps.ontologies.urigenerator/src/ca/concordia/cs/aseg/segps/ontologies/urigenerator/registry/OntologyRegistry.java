@@ -27,4 +27,8 @@ public class OntologyRegistry {
 	public static String securityDBs = "domain-specific/2015/02/securityDBs.owl#";
 	public static String securityDBs_nvd = "system-specific/2015/02/securityDBs-nvd.owl#";
 	public static String securityDBs_osvdb ="system-specific/2015/02/securityDBs-osvdb.owl#";
+	
+	//Video ontology registry
+	public static String videos = "domain-specific/2017/01/videos.owl#";
+	public static String youtube = "system-specific/2017/01/youtube.owl#";
 }
