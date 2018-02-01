@@ -1,0 +1,71 @@
+FUNCTION_BLOCK OVERALL
+
+VAR_INPUT
+	Exploitability_Score: REAL;
+	Impact_Score: REAL;
+END_VAR
+
+VAR_OUTPUT
+	score: REAL;
+END_VAR
+
+FUZZIFY Exploitability_Score
+	TERM VERYPOOR := (6.5,0.0) (7.5,1.0) (9.0,1.0) ;
+	TERM POOR := (5.31,0.0) (6.25,1.0) (7.22,0.0) ;
+	TERM AVERAGE := (4.14,0.0) (5.0,1.0) (5.9,0.0) ;
+	TERM VERYGOOD := (2.95,0.0) (3.75,1.0) (4.6,0.0) ;
+	TERM EXCELLENT := (0.0,1.0) (2.5,1.0) (3.28,0.0) ;
+END_FUZZIFY
+
+FUZZIFY Impact_Score
+	TERM VERYPOOR := (6.5,0.0) (7.5,1.0) (9.0,1.0) ;
+	TERM POOR := (5.31,0.0) (6.25,1.0) (7.22,0.0) ;
+	TERM AVERAGE := (4.14,0.0) (5.0,1.0) (5.9,0.0) ;
+	TERM VERYGOOD := (2.95,0.0) (3.75,1.0) (4.6,0.0) ;
+	TERM EXCELLENT := (0.0,1.0) (2.5,1.0) (3.28,0.0) ;
+END_FUZZIFY
+
+DEFUZZIFY score
+	TERM VERYPOOR := (6.5,0.0) (7.5,1.0) (9.0,1.0) ;
+	TERM POOR := (5.31,0.0) (6.25,1.0) (7.22,0.0) ;
+	TERM AVERAGE := (4.14,0.0) (5.0,1.0) (5.9,0.0) ;
+	TERM VERYGOOD := (2.95,0.0) (3.75,1.0) (4.6,0.0) ;
+	TERM EXCELLENT := (0.0,1.0) (2.5,1.0) (3.28,0.0) ;
+	METHOD : COG;
+END_DEFUZZIFY
+
+RULEBLOCK SCORE_RULES
+	RULE 0 : IF Exploitability_Score IS EXCELLENT AND Impact_Score IS EXCELLENT THEN score IS EXCELLENT ;
+	RULE 1 : IF Exploitability_Score IS EXCELLENT AND Impact_Score IS VERYGOOD THEN score IS VERYGOOD ;
+	RULE 2 : IF Exploitability_Score IS VERYGOOD AND Impact_Score IS EXCELLENT THEN score IS VERYGOOD ;
+	RULE 3 : IF Exploitability_Score IS VERYGOOD AND Impact_Score IS VERYGOOD THEN score IS VERYGOOD ;
+	
+	RULE 4 : IF Exploitability_Score IS VERYPOOR AND Impact_Score IS VERYPOOR THEN score IS VERYPOOR ;
+	RULE 5 : IF Exploitability_Score IS VERYPOOR AND Impact_Score IS POOR THEN score IS VERYPOOR ;
+	RULE 6 : IF Exploitability_Score IS POOR AND Impact_Score IS VERYPOOR THEN score IS VERYPOOR ;
+	RULE 7 : IF Exploitability_Score IS POOR AND Impact_Score IS POOR THEN score IS POOR ;
+	
+	
+	RULE 8 : IF Exploitability_Score IS AVERAGE AND Impact_Score IS AVERAGE THEN score IS AVERAGE ;
+	
+	RULE 9 : IF Exploitability_Score IS EXCELLENT AND Impact_Score IS AVERAGE THEN score IS EXCELLENT ;
+	RULE 10 : IF Exploitability_Score IS VERYGOOD AND Impact_Score IS AVERAGE THEN score IS VERYGOOD ;	
+	RULE 11 : IF Exploitability_Score IS AVERAGE AND Impact_Score IS EXCELLENT THEN score IS EXCELLENT ;
+	RULE 12 : IF Exploitability_Score IS AVERAGE AND Impact_Score IS VERYGOOD THEN score IS VERYGOOD ;
+	
+	RULE 13 : IF Exploitability_Score IS VERYPOOR AND Impact_Score IS AVERAGE THEN score IS VERYPOOR ;
+	RULE 14 : IF Exploitability_Score IS POOR AND Impact_Score IS AVERAGE THEN score IS POOR ;	
+	RULE 15 : IF Exploitability_Score IS AVERAGE AND Impact_Score IS VERYPOOR THEN score IS VERYPOOR ;
+	RULE 16 : IF Exploitability_Score IS AVERAGE AND Impact_Score IS POOR THEN score IS POOR ;
+	
+	RULE 17 : IF Exploitability_Score IS EXCELLENT AND Impact_Score IS VERYPOOR THEN score IS AVERAGE ;
+	RULE 18 : IF Exploitability_Score IS EXCELLENT AND Impact_Score IS POOR THEN score IS AVERAGE ;
+	RULE 19 : IF Exploitability_Score IS VERYGOOD AND Impact_Score IS VERYPOOR THEN score IS AVERAGE ;
+	RULE 20 : IF Exploitability_Score IS VERYGOOD AND Impact_Score IS POOR THEN score IS AVERAGE ;
+	
+	RULE 21 : IF Exploitability_Score IS VERYPOOR AND Impact_Score IS EXCELLENT THEN score IS AVERAGE ;
+	RULE 22 : IF Exploitability_Score IS VERYPOOR AND Impact_Score IS VERYGOOD THEN score IS AVERAGE ;
+	RULE 23 : IF Exploitability_Score IS POOR AND Impact_Score IS EXCELLENT THEN score IS AVERAGE ;
+	RULE 24 : IF Exploitability_Score IS POOR AND Impact_Score IS VERYGOOD THEN score IS AVERAGE ;
+END_RULEBLOCK
+END_FUNCTION_BLOCK
